@@ -55,12 +55,16 @@ describe(function() {
 
     await tag(tmpPath, 'v1.1.1');
 
-    expect(index).to.equal(1);
+    let result = await index(tmpPath);
 
-    let gitStatus = (await execa('git', ['status'], {
+    expect(result).to.equal(`v1.0.0
+v1.1.0
+v1.1.1`);
+
+    let tags = (await execa('git', ['tag', '--points-at', 'HEAD'], {
       cwd: tmpPath
     })).stdout;
 
-    expect(gitStatus).to.include('working tree clean');
+    expect(tags).to.equal('v1 v1.1 v1.1.1');
   });
 });
