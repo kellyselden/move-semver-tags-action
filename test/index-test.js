@@ -2,9 +2,10 @@
 
 const { describe } = require('./helpers/mocha');
 const { expect } = require('./helpers/chai');
+const index = require('..');
 
 describe(function() {
   it('works', function() {
-    expect(1).to.equal(1);
+    expect(index).to.equal(1);
   });
 });
