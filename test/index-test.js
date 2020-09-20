@@ -57,14 +57,16 @@ describe(function() {
 
     let result = await index(tmpPath);
 
-    expect(result).to.equal(`v1.0.0
-v1.1.0
-v1.1.1`);
+    expect(result).to.deep.equal([
+      'v1.0.0',
+      'v1.1.0',
+      'v1.1.1'
+    ]);
 
-    let tags = (await execa('git', ['tag', '--points-at', 'HEAD'], {
-      cwd: tmpPath
-    })).stdout;
+    // let tags = (await execa('git', ['tag', '--points-at', 'HEAD'], {
+    //   cwd: tmpPath
+    // })).stdout;
 
-    expect(tags).to.equal('v1 v1.1 v1.1.1');
+    // expect(tags).to.equal('v1 v1.1 v1.1.1');
   });
 });
