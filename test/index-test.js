@@ -15,6 +15,22 @@ async function writeRandomFile(tmpPath) {
   await writeFile(path.join(tmpPath, Math.random().toString()), Math.random().toString());
 }
 
+async function addAndCommit(tmpPath) {
+  await execa('git', ['add', '.'], {
+    cwd: tmpPath
+  });
+
+  await execa('git', ['commit', '-m', 'foo'], {
+    cwd: tmpPath
+  });
+}
+
+async function tag(tmpPath, tag) {
+  await execa('git', ['tag', tag], {
+    cwd: tmpPath
+  });
+}
+
 describe(function() {
   it('works', async function() {
     let tmpPath = await createTmpDir();
@@ -23,17 +39,21 @@ describe(function() {
 
     await writeRandomFile(tmpPath);
 
-    await execa('git', ['add', '.'], {
-      cwd: tmpPath
-    });
+    await addAndCommit(tmpPath);
 
-    await execa('git', ['commit', '-m', 'first commit'], {
-      cwd: tmpPath
-    });
+    await tag(tmpPath, 'v1.0.0');
 
-    await execa('git', ['tag', 'v1.0.0'], {
-      cwd: tmpPath
-    });
+    await writeRandomFile(tmpPath);
+
+    await addAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v1.1.0');
+
+    await writeRandomFile(tmpPath);
+
+    await addAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v1.1.1');
 
     expect(index).to.equal(1);
 
