@@ -1,0 +1,24 @@
+{
+  "name": "move-semver-tags-action",
+  "version": "0.0.0",
+  "description": "Move your SemVer major and minor tags automatically",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kellyselden/move-semver-tags-action.git"
+  },
+  "keywords": [
+    "github-actions",
+    "semver",
+    "tags"
+  ],
+  "author": "Kelly Selden & Jenny Judova",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kellyselden/move-semver-tags-action/issues"
+  },
+  "homepage": "https://github.com/kellyselden/move-semver-tags-action#readme"
+}
