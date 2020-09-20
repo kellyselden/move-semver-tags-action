@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Move your SemVer major and minor tags automatically",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "lint": "eslint . --ext js,json",
     "test": "mocha --recursive"
