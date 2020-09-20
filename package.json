@@ -7,6 +7,7 @@
     "index.js"
   ],
   "scripts": {
+    "lint:git": "commitlint",
     "lint": "eslint . --ext js,json",
     "test": "mocha --recursive"
   },
@@ -29,6 +30,7 @@
     "node": ">=10.12"
   },
   "devDependencies": {
+    "@crowdstrike/commitlint": "^1.0.4",
     "@kellyselden/node-template": "1.2.1",
     "chai": "^4.2.0",
     "eslint": "^7.8.1",
