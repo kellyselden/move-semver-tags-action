@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 const writeFile = promisify(fs.writeFile);
+const { EOL } = require('os');
 
 async function writeRandomFile(tmpPath) {
   await writeFile(path.join(tmpPath, Math.random().toString()), Math.random().toString());
@@ -32,7 +33,7 @@ async function tag(tmpPath, tag) {
 }
 
 describe(function() {
-  it('works', async function() {
+  it('works without floating tags', async function() {
     let tmpPath = await createTmpDir();
 
     await gitInit({ cwd: tmpPath });
@@ -55,18 +56,18 @@ describe(function() {
 
     await tag(tmpPath, 'v1.1.1');
 
-    let result = await index(tmpPath);
+    await index(tmpPath);
 
-    expect(result).to.deep.equal([
-      'v1.0.0',
-      'v1.1.0',
+    let tags = (await execa('git', ['tag', '--points-at', 'HEAD'], {
+      cwd: tmpPath
+    })).stdout;
+
+    tags = tags.split(EOL);
+
+    expect(tags).to.deep.equal([
+      'v1',
+      'v1.1',
       'v1.1.1'
     ]);
-
-    // let tags = (await execa('git', ['tag', '--points-at', 'HEAD'], {
-    //   cwd: tmpPath
-    // })).stdout;
-
-    // expect(tags).to.equal('v1 v1.1 v1.1.1');
   });
 });

@@ -36,7 +36,8 @@
     "node": ">=10.12"
   },
   "dependencies": {
-    "execa": "^4.0.3"
+    "execa": "^4.0.3",
+    "semver": "^7.3.2"
   },
   "devDependencies": {
     "@crowdstrike/commitlint": "^1.0.4",
