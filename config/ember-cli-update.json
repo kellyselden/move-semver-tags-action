@@ -10,6 +10,20 @@
           "isBaseBlueprint": true
         }
       ]
+    },
+    {
+      "name": "@kellyselden/node-template",
+      "version": "1.2.1",
+      "blueprints": [
+        {
+          "name": "@kellyselden/node-template",
+          "options": [
+            "--repo-slug=kellyselden/move-semver-tags-action",
+            "--github-actions",
+            "--renovate"
+          ]
+        }
+      ]
     }
   ]
 }
