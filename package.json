@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/kellyselden/move-semver-tags-action/issues"
   },
-  "homepage": "https://github.com/kellyselden/move-semver-tags-action#readme"
+  "homepage": "https://github.com/kellyselden/move-semver-tags-action#readme",
+  "engines": {
+    "node": ">=10.12"
+  }
 }
