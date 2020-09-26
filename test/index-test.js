@@ -32,42 +32,130 @@ async function tag(tmpPath, tag) {
   });
 }
 
+async function getCurrentCommit(tmpPath) {
+  return (await execa('git', ['rev-parse', 'HEAD'], {
+    cwd: tmpPath
+  })).stdout;
+}
+
+async function writeAndCommit(tmpPath) {
+  await writeRandomFile(tmpPath);
+
+  await addAndCommit(tmpPath);
+}
+
+async function getTagsAtCommit(commit, tmpPath) {
+  let tags = (await execa('git', ['tag', '--points-at', commit], {
+    cwd: tmpPath
+  })).stdout;
+
+  tags = tags.split(EOL);
+
+  return tags;
+}
+
 describe(function() {
-  it('works without floating tags', async function() {
-    let tmpPath = await createTmpDir();
+  let tmpPath;
+
+  beforeEach(async function() {
+    tmpPath = await createTmpDir();
 
     await gitInit({ cwd: tmpPath });
+  });
 
-    await writeRandomFile(tmpPath);
-
-    await addAndCommit(tmpPath);
+  it('works without floating tags', async function() {
+    await writeAndCommit(tmpPath);
 
     await tag(tmpPath, 'v1.0.0');
 
-    await writeRandomFile(tmpPath);
-
-    await addAndCommit(tmpPath);
+    await writeAndCommit(tmpPath);
 
     await tag(tmpPath, 'v1.1.0');
 
-    await writeRandomFile(tmpPath);
-
-    await addAndCommit(tmpPath);
+    await writeAndCommit(tmpPath);
 
     await tag(tmpPath, 'v1.1.1');
 
+    let v1Commit = await getCurrentCommit(tmpPath);
+
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v2.0.0');
+
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v2.1.0');
+
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v2.1.1');
+
     await index(tmpPath);
 
-    let tags = (await execa('git', ['tag', '--points-at', 'HEAD'], {
-      cwd: tmpPath
-    })).stdout;
+    let v1Tags = await getTagsAtCommit(v1Commit, tmpPath);
 
-    tags = tags.split(EOL);
-
-    expect(tags).to.deep.equal([
+    expect(v1Tags).to.deep.equal([
       'v1',
       'v1.1',
       'v1.1.1'
+    ]);
+
+    let v2Tags = await getTagsAtCommit('HEAD', tmpPath);
+
+    expect(v2Tags).to.deep.equal([
+      'v2',
+      'v2.1',
+      'v2.1.1'
+    ]);
+  });
+
+  it('works with floating tags', async function() {
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v1.0.0');
+    await tag(tmpPath, 'v1');
+
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v1.1.0');
+    await tag(tmpPath, 'v1.1');
+
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v1.1.1');
+
+    let v1Commit = await getCurrentCommit(tmpPath);
+
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v2.0.0');
+    await tag(tmpPath, 'v2');
+
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v2.1.0');
+    await tag(tmpPath, 'v2.1');
+
+    await writeAndCommit(tmpPath);
+
+    await tag(tmpPath, 'v2.1.1');
+
+    await index(tmpPath);
+
+    let v1Tags = await getTagsAtCommit(v1Commit, tmpPath);
+
+    expect(v1Tags).to.deep.equal([
+      'v1',
+      'v1.1',
+      'v1.1.1'
+    ]);
+
+    let v2Tags = await getTagsAtCommit('HEAD', tmpPath);
+
+    expect(v2Tags).to.deep.equal([
+      'v2',
+      'v2.1',
+      'v2.1.1'
     ]);
   });
 });

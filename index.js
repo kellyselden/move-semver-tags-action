@@ -11,16 +11,39 @@ async function index(tmpPath) {
 
   tags = tags.split(EOL);
 
-  let maxSatisfying = semver.maxSatisfying(tags, '^1');
+  let majors = new Set();
 
-  let { stdout: commit } = await execa('git', ['rev-list', '-n', '1', maxSatisfying], {
-    cwd: tmpPath
-  });
+  for (let tag of tags) {
+    if (semver.valid(tag) === null) {
+      continue;
+    }
 
-  for (let tag of ['v1', 'v1.1']) {
-    await execa('git', ['tag', '-a', tag, commit, '-m', ''], {
+    let major = semver.major(tag);
+
+    majors.add(major);
+  }
+
+  for (let major of majors) {
+    let maxSatisfying = semver.maxSatisfying(tags, `^${major}`);
+
+    let { stdout: commit } = await execa('git', ['rev-list', '-n', '1', maxSatisfying], {
       cwd: tmpPath
     });
+
+    let majorTag = `v${semver.major(maxSatisfying)}`;
+    let minorTag = `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
+
+    for (let tag of [majorTag, minorTag]) {
+      try {
+        await execa('git', ['tag', '-d', tag], {
+          cwd: tmpPath
+        });
+      } catch (err) {}
+
+      await execa('git', ['tag', '-a', tag, commit, '-m', ''], {
+        cwd: tmpPath
+      });
+    }
   }
 }
 
