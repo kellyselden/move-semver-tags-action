@@ -44,6 +44,24 @@ async function writeAndCommit(tmpPath) {
   await addAndCommit(tmpPath);
 }
 
+async function cloneRemote(localPath, remotePath) {
+  await execa('git', ['clone', '--bare', localPath, remotePath]);
+
+  await execa('git', ['remote', 'add', 'origin', remotePath], {
+    cwd: localPath
+  });
+}
+
+async function pushTags(tmpPath) {
+  await execa('git', ['push', '--set-upstream', 'origin', 'master'], {
+    cwd: tmpPath
+  });
+
+  await execa('git', ['push', '--tags'], {
+    cwd: tmpPath
+  });
+}
+
 async function getTagsAtCommit(commit, tmpPath) {
   let tags = (await execa('git', ['tag', '-n99', '--points-at', commit], {
     cwd: tmpPath
@@ -55,44 +73,53 @@ async function getTagsAtCommit(commit, tmpPath) {
 }
 
 describe(function() {
-  let tmpPath;
+  let tmpPathLocal;
+  let tmpPathRemote;
 
   beforeEach(async function() {
-    tmpPath = await createTmpDir();
+    tmpPathLocal = await createTmpDir();
+    tmpPathRemote = await createTmpDir();
 
-    await gitInit({ cwd: tmpPath });
+    await gitInit({ cwd: tmpPathLocal });
+    // await gitInit({ cwd: tmpPathRemote });
+
+    // await execa('git', ['remote', 'add', 'origin', tmpPathRemote], {
+    //   cwd: tmpPathLocal
+    // });
   });
 
   it('works without floating tags', async function() {
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v1.0.0');
+    await tag(tmpPathLocal, 'v1.0.0');
 
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v1.1.0');
+    await tag(tmpPathLocal, 'v1.1.0');
 
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v1.1.1');
+    await tag(tmpPathLocal, 'v1.1.1');
 
-    let v1Commit = await getCurrentCommit(tmpPath);
+    let v1Commit = await getCurrentCommit(tmpPathLocal);
 
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v2.0.0');
+    await tag(tmpPathLocal, 'v2.0.0');
 
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v2.1.0');
+    await tag(tmpPathLocal, 'v2.1.0');
 
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v2.1.1');
+    await tag(tmpPathLocal, 'v2.1.1');
 
-    await index(tmpPath);
+    await cloneRemote(tmpPathLocal, tmpPathRemote);
 
-    let v1Tags = await getTagsAtCommit(v1Commit, tmpPath);
+    await index(tmpPathLocal);
+
+    let v1Tags = await getTagsAtCommit(v1Commit, tmpPathRemote);
 
     expect(v1Tags).to.deep.equal([
       'v1',
@@ -100,7 +127,7 @@ describe(function() {
       'v1.1.1'
     ]);
 
-    let v2Tags = await getTagsAtCommit('HEAD', tmpPath);
+    let v2Tags = await getTagsAtCommit('HEAD', tmpPathRemote);
 
     expect(v2Tags).to.deep.equal([
       'v2',
@@ -110,39 +137,43 @@ describe(function() {
   });
 
   it('works with floating tags', async function() {
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v1.0.0');
-    await tag(tmpPath, 'v1', 'version one');
+    await tag(tmpPathLocal, 'v1.0.0');
+    await tag(tmpPathLocal, 'v1', 'version one');
 
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v1.1.0');
-    await tag(tmpPath, 'v1.1', 'version one dot one');
+    await tag(tmpPathLocal, 'v1.1.0');
+    await tag(tmpPathLocal, 'v1.1', 'version one dot one');
 
-    await writeAndCommit(tmpPath);
+    await writeAndCommit(tmpPathLocal);
 
-    await tag(tmpPath, 'v1.1.1');
+    await tag(tmpPathLocal, 'v1.1.1');
 
-    let v1Commit = await getCurrentCommit(tmpPath);
+    await cloneRemote(tmpPathLocal, tmpPathRemote);
 
-    await writeAndCommit(tmpPath);
+    let v1Commit = await getCurrentCommit(tmpPathRemote);
 
-    await tag(tmpPath, 'v2.0.0');
-    await tag(tmpPath, 'v2', 'version two');
+    await writeAndCommit(tmpPathLocal);
 
-    await writeAndCommit(tmpPath);
+    await tag(tmpPathLocal, 'v2.0.0');
+    await tag(tmpPathLocal, 'v2', 'version two');
 
-    await tag(tmpPath, 'v2.1.0');
-    await tag(tmpPath, 'v2.1', 'version two dot one');
+    await writeAndCommit(tmpPathLocal);
 
-    await writeAndCommit(tmpPath);
+    await tag(tmpPathLocal, 'v2.1.0');
+    await tag(tmpPathLocal, 'v2.1', 'version two dot one');
 
-    await tag(tmpPath, 'v2.1.1');
+    await writeAndCommit(tmpPathLocal);
 
-    await index(tmpPath);
+    await tag(tmpPathLocal, 'v2.1.1');
 
-    let v1Tags = await getTagsAtCommit(v1Commit, tmpPath);
+    await pushTags(tmpPathLocal);
+
+    await index(tmpPathLocal);
+
+    let v1Tags = await getTagsAtCommit(v1Commit, tmpPathRemote);
 
     expect(v1Tags).to.deep.equal([
       'v1              version one',
@@ -150,7 +181,7 @@ describe(function() {
       'v1.1.1'
     ]);
 
-    let v2Tags = await getTagsAtCommit('HEAD', tmpPath);
+    let v2Tags = await getTagsAtCommit('HEAD', tmpPathRemote);
 
     expect(v2Tags).to.deep.equal([
       'v2              version two',

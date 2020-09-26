@@ -33,7 +33,9 @@ async function index(tmpPath) {
     let majorTag = `v${semver.major(maxSatisfying)}`;
     let minorTag = `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
 
-    for (let tag of [majorTag, minorTag]) {
+    let newTags = [majorTag, minorTag];
+
+    for (let tag of newTags) {
       let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
         cwd: tmpPath
       })).stdout.trim();
@@ -48,6 +50,10 @@ async function index(tmpPath) {
         cwd: tmpPath
       });
     }
+
+    await execa('git', ['push', 'origin', 'tag', ...newTags, '--force'], {
+      cwd: tmpPath
+    });
   }
 }
 
