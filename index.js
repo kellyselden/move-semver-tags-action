@@ -4,7 +4,18 @@ const execa = require('execa');
 const { EOL } = require('os');
 const semver = require('semver');
 
-async function index(tmpPath) {
+async function getTagMessage(tag, cwd) {
+  let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
+    cwd
+  })).stdout.trim();
+
+  return message;
+}
+
+async function index({
+  cwd: tmpPath,
+  copyAnnotation
+}) {
   let { stdout: tags } = await execa('git', ['tag'], {
     cwd: tmpPath
   });
@@ -30,15 +41,21 @@ async function index(tmpPath) {
       cwd: tmpPath
     });
 
+    let originalMessage = await getTagMessage(maxSatisfying, tmpPath);
+
     let majorTag = `v${semver.major(maxSatisfying)}`;
     let minorTag = `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
 
     let newTags = [majorTag, minorTag];
 
     for (let tag of newTags) {
-      let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
-        cwd: tmpPath
-      })).stdout.trim();
+      let message;
+
+      if (copyAnnotation) {
+        message = originalMessage;
+      } else {
+        message = await getTagMessage(tag, tmpPath);
+      }
 
       try {
         await execa('git', ['tag', '-d', tag], {
