@@ -34,13 +34,17 @@ async function index(tmpPath) {
     let minorTag = `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
 
     for (let tag of [majorTag, minorTag]) {
+      let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
+        cwd: tmpPath
+      })).stdout.trim();
+
       try {
         await execa('git', ['tag', '-d', tag], {
           cwd: tmpPath
         });
       } catch (err) {}
 
-      await execa('git', ['tag', '-a', tag, commit, '-m', ''], {
+      await execa('git', ['tag', '-a', tag, commit, '-m', message], {
         cwd: tmpPath
       });
     }
