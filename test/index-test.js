@@ -81,6 +81,8 @@ describe(function() {
     tmpPathRemote = await createTmpDir();
 
     await gitInit({ cwd: tmpPathLocal });
+
+    await cloneRemote(tmpPathLocal, tmpPathRemote);
     // await gitInit({ cwd: tmpPathRemote });
 
     // await execa('git', ['remote', 'add', 'origin', tmpPathRemote], {
@@ -115,7 +117,7 @@ describe(function() {
 
     await tag(tmpPathLocal, 'v2.1.1');
 
-    await cloneRemote(tmpPathLocal, tmpPathRemote);
+    await pushTags(tmpPathLocal);
 
     await index(tmpPathLocal);
 
@@ -151,7 +153,7 @@ describe(function() {
 
     await tag(tmpPathLocal, 'v1.1.1');
 
-    await cloneRemote(tmpPathLocal, tmpPathRemote);
+    await pushTags(tmpPathLocal);
 
     let v1Commit = await getCurrentCommit(tmpPathRemote);
 
