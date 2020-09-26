@@ -23,19 +23,28 @@ async function index({
   tags = tags.split(EOL);
 
   let majors = new Set();
+  let minors = new Set();
 
   for (let tag of tags) {
     if (semver.valid(tag) === null) {
       continue;
     }
 
-    let major = semver.major(tag);
+    let parsed = semver.parse(tag);
+
+    let {
+      major,
+      minor
+    } = parsed;
+
+    let majorMinor = `${major}.${minor}`;
 
     majors.add(major);
+    minors.add(majorMinor);
   }
 
   for (let major of majors) {
-    let maxSatisfying = semver.maxSatisfying(tags, `^${major}`);
+    let maxSatisfying = semver.maxSatisfying(tags, major.toString());
 
     let { stdout: commit } = await execa('git', ['rev-list', '-n', '1', maxSatisfying], {
       cwd: tmpPath
@@ -44,9 +53,46 @@ async function index({
     let originalMessage = await getTagMessage(maxSatisfying, tmpPath);
 
     let majorTag = `v${semver.major(maxSatisfying)}`;
+
+    let newTags = [majorTag];
+
+    for (let tag of newTags) {
+      let message;
+
+      if (copyAnnotation) {
+        message = originalMessage;
+      } else {
+        message = await getTagMessage(tag, tmpPath);
+      }
+
+      try {
+        await execa('git', ['tag', '-d', tag], {
+          cwd: tmpPath
+        });
+      } catch (err) {}
+
+      await execa('git', ['tag', '-a', tag, commit, '-m', message], {
+        cwd: tmpPath
+      });
+    }
+
+    await execa('git', ['push', 'origin', 'tag', ...newTags, '--force'], {
+      cwd: tmpPath
+    });
+  }
+
+  for (let minor of minors) {
+    let maxSatisfying = semver.maxSatisfying(tags, `~${minor}`);
+
+    let { stdout: commit } = await execa('git', ['rev-list', '-n', '1', maxSatisfying], {
+      cwd: tmpPath
+    });
+
+    let originalMessage = await getTagMessage(maxSatisfying, tmpPath);
+
     let minorTag = `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
 
-    let newTags = [majorTag, minorTag];
+    let newTags = [minorTag];
 
     for (let tag of newTags) {
       let message;
