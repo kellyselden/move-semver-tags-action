@@ -26,7 +26,7 @@
     "semver",
     "tags"
   ],
-  "author": "Kelly Selden & Jenny Judova",
+  "author": "Kelly Selden, Jenny Judova, & Gonçalo Morais",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kellyselden/move-semver-tags-action/issues"
