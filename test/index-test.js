@@ -83,11 +83,6 @@ describe(function() {
     await gitInit({ cwd: tmpPathLocal });
 
     await cloneRemote(tmpPathLocal, tmpPathRemote);
-    // await gitInit({ cwd: tmpPathRemote });
-
-    // await execa('git', ['remote', 'add', 'origin', tmpPathRemote], {
-    //   cwd: tmpPathLocal
-    // });
   });
 
   it('works without floating tags', async function() {
