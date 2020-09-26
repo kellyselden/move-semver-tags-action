@@ -114,7 +114,7 @@ describe(function() {
 
     await pushTags(tmpPathLocal);
 
-    await index(tmpPathLocal);
+    await index({ cwd: tmpPathLocal });
 
     let v1Tags = await getTagsAtCommit(v1Commit, tmpPathRemote);
 
@@ -168,7 +168,7 @@ describe(function() {
 
     await pushTags(tmpPathLocal);
 
-    await index(tmpPathLocal);
+    await index({ cwd: tmpPathLocal });
 
     let v1Tags = await getTagsAtCommit(v1Commit, tmpPathRemote);
 
@@ -184,6 +184,57 @@ describe(function() {
       'v2              version two',
       'v2.1            version two dot one',
       'v2.1.1'
+    ]);
+  });
+
+  it('can copy the annotation', async function() {
+    await writeAndCommit(tmpPathLocal);
+
+    await tag(tmpPathLocal, 'v1.0.0', 'chore(release): 1.0.0');
+
+    await writeAndCommit(tmpPathLocal);
+
+    await tag(tmpPathLocal, 'v1.1.0', 'chore(release): 1.1.0');
+
+    await writeAndCommit(tmpPathLocal);
+
+    await tag(tmpPathLocal, 'v1.1.1', 'chore(release): 1.1.1');
+
+    let v1Commit = await getCurrentCommit(tmpPathLocal);
+
+    await writeAndCommit(tmpPathLocal);
+
+    await tag(tmpPathLocal, 'v2.0.0', 'chore(release): 2.0.0');
+
+    await writeAndCommit(tmpPathLocal);
+
+    await tag(tmpPathLocal, 'v2.1.0', 'chore(release): 2.1.0');
+
+    await writeAndCommit(tmpPathLocal);
+
+    await tag(tmpPathLocal, 'v2.1.1', 'chore(release): 2.1.1');
+
+    await pushTags(tmpPathLocal);
+
+    await index({
+      cwd: tmpPathLocal,
+      copyAnnotation: true
+    });
+
+    let v1Tags = await getTagsAtCommit(v1Commit, tmpPathRemote);
+
+    expect(v1Tags).to.deep.equal([
+      'v1              chore(release): 1.1.1',
+      'v1.1            chore(release): 1.1.1',
+      'v1.1.1          chore(release): 1.1.1'
+    ]);
+
+    let v2Tags = await getTagsAtCommit('HEAD', tmpPathRemote);
+
+    expect(v2Tags).to.deep.equal([
+      'v2              chore(release): 2.1.1',
+      'v2.1            chore(release): 2.1.1',
+      'v2.1.1          chore(release): 2.1.1'
     ]);
   });
 });
