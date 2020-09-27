@@ -243,7 +243,7 @@ describe(function() {
     ]);
   });
 
-  it('can copy the annotation', async function() {
+  it.only('can copy the annotation', async function() {
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.0', 'chore(release): 1.0.0');

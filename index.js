@@ -1,8 +1,50 @@
 'use strict';
 
-const execa = require('execa');
+const _execa = require('execa');
 const { EOL } = require('os');
 const semver = require('semver');
+
+async function execa() {
+  let before = new Date().getTime();
+  console.log([...arguments].join(' '));
+  try {
+    return await _execa(...arguments);
+  } finally {
+    console.log(new Date().getTime() - before);
+  }
+}
+
+async function getTags(tmpPath) {
+  let { stdout } = await execa('git', [
+    'for-each-ref',
+    '--sort',
+    '-v:refname',
+    '--format',
+    '%(*objectname) %(tag) %(subject)',
+    'refs/tags'
+  ], {
+    cwd: tmpPath
+  });
+
+  let lines = stdout.split(EOL);
+
+  let tags = lines.map(line => {
+    let commit = line.substring(0, line.indexOf(' '));
+    let tag = line.substring(line.indexOf(' ') + 1, line.indexOf(' ', line.indexOf(' ') + 1));
+    let message = line.substring(line.indexOf(' ', line.indexOf(' ') + 1) + 1);
+
+    return {
+      commit,
+      tag,
+      message
+    };
+  });
+
+  return tags;
+}
+
+// git log --tags --no-walk --pretty='%H %D %s'
+// git for-each-ref --sort -v:refname --format '%(*objectname) %(tag) %(subject)' refs/tags
 
 async function getTagMessage(tag, cwd) {
   let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
@@ -16,16 +58,19 @@ async function index({
   cwd: tmpPath,
   copyAnnotation
 }) {
-  let { stdout: tags } = await execa('git', ['tag'], {
-    cwd: tmpPath
-  });
-
-  tags = tags.split(EOL);
+  // let { stdout: tags } = await execa('git', ['tag'], {
+  //   cwd: tmpPath
+  // });
+  let tags = await getTags(tmpPath);
 
   let majors = new Set();
   let minors = new Set();
 
-  for (let tag of tags) {
+  for (let {
+    commit,
+    tag,
+    message
+  } of tags) {
     if (semver.valid(tag) === null) {
       continue;
     }
@@ -63,7 +108,7 @@ async function index({
     range,
     getTag
   } of [...majors, ...minors]) {
-    let maxSatisfying = semver.maxSatisfying(tags, range);
+    let maxSatisfying = semver.maxSatisfying(tags.map(({ tag }) => tag), range);
 
     let { stdout: commit } = await execa('git', ['rev-list', '-n', '1', maxSatisfying], {
       cwd: tmpPath
