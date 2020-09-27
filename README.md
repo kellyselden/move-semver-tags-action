@@ -4,3 +4,9 @@
 ![](https://github.com/kellyselden/move-semver-tags-action/workflows/Publish/badge.svg)
 
 Move your SemVer major and minor tags automatically
+
+```yml
+- uses: kellyselden/move-semver-tags-action@v1
+  with:
+    copy-annotation: true
+```
