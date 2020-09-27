@@ -1,18 +1,8 @@
 'use strict';
 
-const _execa = require('execa');
+const execa = require('execa');
 const { EOL } = require('os');
 const semver = require('semver');
-
-async function execa() {
-  let before = new Date().getTime();
-  console.log([...arguments].join(' '));
-  try {
-    return await _execa(...arguments);
-  } finally {
-    console.log(new Date().getTime() - before);
-  }
-}
 
 async function getTags(tmpPath) {
   let { stdout } = await execa('git', [
@@ -29,22 +19,17 @@ async function getTags(tmpPath) {
   let lines = stdout.split(EOL);
 
   let tags = lines.map(line => {
-    let commit = line.substring(0, line.indexOf(' '));
-    let tag = line.substring(line.indexOf(' ') + 1, line.indexOf(' ', line.indexOf(' ') + 1));
-    let message = line.substring(line.indexOf(' ', line.indexOf(' ') + 1) + 1);
+    let [commit, tag, ...message] = line.split(' ');
 
     return {
       commit,
       tag,
-      message
+      message: message.join(' ')
     };
   });
 
   return tags;
 }
-
-// git log --tags --no-walk --pretty='%H %D %s'
-// git for-each-ref --sort -v:refname --format '%(*objectname) %(tag) %(subject)' refs/tags
 
 async function getTagMessage(tag, cwd) {
   let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
