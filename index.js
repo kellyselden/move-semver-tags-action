@@ -43,49 +43,33 @@ async function index({
     minors.add(majorMinor);
   }
 
-  function maxSatisfying(range) {
-    return semver.maxSatisfying(tags, range);
-  }
+  majors = [...majors].map(major => ({
+    range: major.toString(),
+    getTag(maxSatisfying) {
+      return `v${semver.major(maxSatisfying)}`;
+    }
+  }));
 
-  function getMajorTag(maxSatisfying) {
-    return `v${semver.major(maxSatisfying)}`;
-  }
-
-  function getMinorTag(maxSatisfying) {
-    return `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
-  }
-
-  majors = [...majors].map(major => {
-    let _maxSatisfying = maxSatisfying(major.toString());
-
-    let majorTag = getMajorTag(_maxSatisfying);
-
-    return {
-      maxSatisfying: _maxSatisfying,
-      tag: majorTag
-    };
-  });
-
-  minors = [...minors].map(minor => {
-    let _maxSatisfying = maxSatisfying(`~${minor}`);
-
-    let minorTag = getMinorTag(_maxSatisfying);
-
-    return {
-      maxSatisfying: _maxSatisfying,
-      tag: minorTag
-    };
-  });
+  minors = [...minors].map(minor => ({
+    range: `~${minor}`,
+    getTag(maxSatisfying) {
+      return `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
+    }
+  }));
 
   for (let {
-    maxSatisfying,
-    tag
+    range,
+    getTag
   } of [...majors, ...minors]) {
+    let maxSatisfying = semver.maxSatisfying(tags, range);
+
     let { stdout: commit } = await execa('git', ['rev-list', '-n', '1', maxSatisfying], {
       cwd: tmpPath
     });
 
     let originalMessage = await getTagMessage(maxSatisfying, tmpPath);
+
+    let tag = getTag(maxSatisfying);
 
     let newTags = [tag];
 
