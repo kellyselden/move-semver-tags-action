@@ -1,5 +1,8 @@
 name: 'move-semver-tags-action'
 description: 'Move your SemVer major and minor tags automatically'
+branding:
+  icon: 'tag'
+  color: 'purple'
 inputs:
   copy-annotation:
     description: 'Copy the annotation from the latest tag'
