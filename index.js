@@ -57,6 +57,8 @@ async function index({
     }
   }));
 
+  let newTags = [];
+
   for (let {
     range,
     getTag
@@ -73,32 +75,30 @@ async function index({
 
     let tag = getTag(parsed);
 
-    let newTags = [tag];
+    let message;
 
-    for (let tag of newTags) {
-      let message;
-
-      if (copyAnnotation) {
-        message = originalMessage;
-      } else {
-        message = await getTagMessage(tag, tmpPath);
-      }
-
-      try {
-        await execa('git', ['tag', '-d', tag], {
-          cwd: tmpPath
-        });
-      } catch (err) {}
-
-      await execa('git', ['tag', '-a', tag, commit, '-m', message], {
-        cwd: tmpPath
-      });
+    if (copyAnnotation) {
+      message = originalMessage;
+    } else {
+      message = await getTagMessage(tag, tmpPath);
     }
 
-    await execa('git', ['push', 'origin', 'tag', ...newTags, '--force'], {
+    try {
+      await execa('git', ['tag', '-d', tag], {
+        cwd: tmpPath
+      });
+    } catch (err) {}
+
+    await execa('git', ['tag', '-a', tag, commit, '-m', message], {
       cwd: tmpPath
     });
+
+    newTags.push(tag);
   }
+
+  await execa('git', ['push', 'origin', 'tag', ...newTags, '--force'], {
+    cwd: tmpPath
+  });
 }
 
 module.exports = index;
