@@ -40,7 +40,7 @@ async function getTagMessage(tag, cwd) {
 }
 
 async function index({
-  cwd: tmpPath,
+  cwd: tmpPath = process.cwd(),
   copyAnnotation
 }) {
   let tags = await getTags(tmpPath);

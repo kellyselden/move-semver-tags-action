@@ -14,6 +14,7 @@
   },
   "standard-version": {
     "scripts": {
+      "prerelease": "ncc build src/action.js -o dist && git add -A dist",
       "posttag": "git push --follow-tags --atomic"
     }
   },
@@ -36,12 +37,15 @@
     "node": ">=10.12"
   },
   "dependencies": {
+    "@actions/core": "^1.2.6",
     "execa": "^4.0.3",
-    "semver": "^7.3.2"
+    "semver": "^7.3.2",
+    "yn": "^4.0.0"
   },
   "devDependencies": {
     "@crowdstrike/commitlint": "^1.0.4",
     "@kellyselden/node-template": "1.2.1",
+    "@zeit/ncc": "0.22.3",
     "chai": "^4.2.0",
     "eslint": "^7.8.1",
     "eslint-config-sane": "0.8.5",

@@ -2,7 +2,7 @@
 
 const { describe } = require('./helpers/mocha');
 const { expect } = require('./helpers/chai');
-const index = require('..');
+const index = require('../src');
 const { createTmpDir } = require('./helpers/tmp');
 const { gitInit } = require('git-fixtures');
 const execa = require('execa');
