@@ -43,24 +43,36 @@ async function index({
     minors.add(majorMinor);
   }
 
-  majors = [...majors].map(major => {
-    let maxSatisfying = semver.maxSatisfying(tags, major.toString());
+  function maxSatisfying(range) {
+    return semver.maxSatisfying(tags, range);
+  }
 
-    let majorTag = `v${semver.major(maxSatisfying)}`;
+  function getMajorTag(maxSatisfying) {
+    return `v${semver.major(maxSatisfying)}`;
+  }
+
+  function getMinorTag(maxSatisfying) {
+    return `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
+  }
+
+  majors = [...majors].map(major => {
+    let _maxSatisfying = maxSatisfying(major.toString());
+
+    let majorTag = getMajorTag(_maxSatisfying);
 
     return {
-      maxSatisfying,
+      maxSatisfying: _maxSatisfying,
       tag: majorTag
     };
   });
 
   minors = [...minors].map(minor => {
-    let maxSatisfying = semver.maxSatisfying(tags, `~${minor}`);
+    let _maxSatisfying = maxSatisfying(`~${minor}`);
 
-    let minorTag = `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
+    let minorTag = getMinorTag(_maxSatisfying);
 
     return {
-      maxSatisfying,
+      maxSatisfying: _maxSatisfying,
       tag: minorTag
     };
   });
