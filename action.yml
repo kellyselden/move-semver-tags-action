@@ -1,0 +1,8 @@
+name: 'move-semver-tags-action'
+description: 'Move your SemVer major and minor tags automatically'
+inputs:
+  copy-annotation:
+    description: 'Copy the annotation from the latest tag'
+    default: false
+runs:
+  main: 'dist/index.js'
