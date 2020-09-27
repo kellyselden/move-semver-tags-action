@@ -5,4 +5,5 @@ inputs:
     description: 'Copy the annotation from the latest tag'
     default: false
 runs:
+  using: 'node14'
   main: 'dist/index.js'
