@@ -19,6 +19,6 @@ jobs:
         git config user.name "$(git show -s --format=%an)"
     - run: npm run release
 
-    # - uses: kellyselden/move-semver-tags-action@v0.0.11
-    #   with:
-    #     copy-annotation: true
+    - uses: kellyselden/move-semver-tags-action@v0.0.12
+      with:
+        copy-annotation: true
