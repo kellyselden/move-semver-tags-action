@@ -45,15 +45,15 @@ async function index({
 
   majors = [...majors].map(major => ({
     range: major.toString(),
-    getTag(maxSatisfying) {
-      return `v${semver.major(maxSatisfying)}`;
+    getTag({ major }) {
+      return `v${major}`;
     }
   }));
 
   minors = [...minors].map(minor => ({
     range: `~${minor}`,
-    getTag(maxSatisfying) {
-      return `v${semver.major(maxSatisfying)}.${semver.minor(maxSatisfying)}`;
+    getTag({ major, minor }) {
+      return `v${major}.${minor}`;
     }
   }));
 
@@ -69,7 +69,9 @@ async function index({
 
     let originalMessage = await getTagMessage(maxSatisfying, tmpPath);
 
-    let tag = getTag(maxSatisfying);
+    let parsed = semver.parse(maxSatisfying);
+
+    let tag = getTag(parsed);
 
     let newTags = [tag];
 
