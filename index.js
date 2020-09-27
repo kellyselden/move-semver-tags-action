@@ -4,6 +4,33 @@ const execa = require('execa');
 const { EOL } = require('os');
 const semver = require('semver');
 
+async function getTags(tmpPath) {
+  let { stdout } = await execa('git', [
+    'for-each-ref',
+    '--sort',
+    '-v:refname',
+    '--format',
+    '%(*objectname) %(tag) %(subject)',
+    'refs/tags'
+  ], {
+    cwd: tmpPath
+  });
+
+  let lines = stdout.split(EOL);
+
+  let tags = lines.map(line => {
+    let [commit, tag, ...message] = line.split(' ');
+
+    return {
+      commit,
+      tag,
+      message: message.join(' ')
+    };
+  });
+
+  return tags;
+}
+
 async function getTagMessage(tag, cwd) {
   let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
     cwd
@@ -16,16 +43,16 @@ async function index({
   cwd: tmpPath,
   copyAnnotation
 }) {
-  let { stdout: tags } = await execa('git', ['tag'], {
-    cwd: tmpPath
-  });
+  let tags = await getTags(tmpPath);
 
-  tags = tags.split(EOL);
+  let tagsObj = {};
+  let majorsAndMinors = {};
 
-  let majors = new Set();
-  let minors = new Set();
-
-  for (let tag of tags) {
+  for (let {
+    commit,
+    tag,
+    message
+  } of tags) {
     if (semver.valid(tag) === null) {
       continue;
     }
@@ -39,41 +66,26 @@ async function index({
 
     let majorMinor = `${major}.${minor}`;
 
-    majors.add(major);
-    minors.add(majorMinor);
+    majorsAndMinors[`v${major}`] = major.toString();
+    majorsAndMinors[`v${major}.${minor}`] = `~${majorMinor}`;
+
+    tagsObj[tag] = {
+      major: `v${major}`,
+      minor: `v${major}.${minor}`,
+      commit,
+      message
+    };
   }
-
-  majors = [...majors].map(major => ({
-    range: major.toString(),
-    getTag({ major }) {
-      return `v${major}`;
-    }
-  }));
-
-  minors = [...minors].map(minor => ({
-    range: `~${minor}`,
-    getTag({ major, minor }) {
-      return `v${major}.${minor}`;
-    }
-  }));
 
   let newTags = [];
 
-  for (let {
-    range,
-    getTag
-  } of [...majors, ...minors]) {
-    let maxSatisfying = semver.maxSatisfying(tags, range);
+  for (let [tag, range] of Object.entries(majorsAndMinors)) {
+    let maxSatisfying = semver.maxSatisfying(tags.map(({ tag }) => tag), range);
 
-    let { stdout: commit } = await execa('git', ['rev-list', '-n', '1', maxSatisfying], {
-      cwd: tmpPath
-    });
-
-    let originalMessage = await getTagMessage(maxSatisfying, tmpPath);
-
-    let parsed = semver.parse(maxSatisfying);
-
-    let tag = getTag(parsed);
+    let {
+      commit,
+      message: originalMessage
+    } = tagsObj[maxSatisfying];
 
     let message;
 
