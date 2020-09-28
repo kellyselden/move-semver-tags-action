@@ -1,0 +1,27 @@
+name: Release
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-node@v1
+
+    - run: npm ci
+    - run: |
+        git config user.email "$(git show -s --format=%ae)"
+        git config user.name "$(git show -s --format=%an)"
+    - run: npm run release
+
+    - uses: kellyselden/move-semver-tags-action@v2
+      with:
+        copy-annotations: true
