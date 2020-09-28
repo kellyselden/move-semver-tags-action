@@ -2,18 +2,32 @@ name: Publish
 
 on:
   push:
-    tags: v[0-9]+.[0-9]+.[0-9]+
+    branches:
+    - master
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
     - uses: actions/setup-node@v1
       with:
         registry-url: 'https://registry.npmjs.org'
 
+    - run: npm ci
+    - run: |
+        git config user.email "$(git show -s --format=%ae)"
+        git config user.name "$(git show -s --format=%an)"
+    - run: npm run release
+
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - uses: kellyselden/move-semver-tags-action@v2
+      with:
+        copy-annotations: true
