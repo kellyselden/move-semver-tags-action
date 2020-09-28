@@ -3892,7 +3892,7 @@ async function getTagMessage(tag, cwd) {
 
 async function index({
   cwd: tmpPath = process.cwd(),
-  copyAnnotations
+  copyAnnotation
 }) {
   let tags = await getTags(tmpPath);
 
@@ -3940,7 +3940,7 @@ async function index({
 
     let message;
 
-    if (copyAnnotations) {
+    if (copyAnnotation) {
       message = originalMessage;
     } else {
       message = await getTagMessage(tag, tmpPath);
@@ -4973,10 +4973,10 @@ const yn = __webpack_require__(300);
 
 (async() => {
   try {
-    let copyAnnotations = yn(core.getInput('copy-annotations'));
+    let copyAnnotation = yn(core.getInput('copy-annotation'));
 
     await index({
-      copyAnnotations
+      copyAnnotation
     });
   } catch (err) {
     core.setFailed(err.message);
