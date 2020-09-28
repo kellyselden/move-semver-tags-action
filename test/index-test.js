@@ -286,7 +286,7 @@ describe(function() {
 
     await index({
       cwd: tmpPathLocal,
-      copyAnnotation: true
+      copyAnnotations: true
     });
 
     let v10Tags = await getTagsAtCommit(v10Commit, tmpPathRemote);
