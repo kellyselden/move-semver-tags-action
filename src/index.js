@@ -41,7 +41,7 @@ async function getTagMessage(tag, cwd) {
 
 async function index({
   cwd: tmpPath = process.cwd(),
-  copyAnnotation
+  copyAnnotations
 }) {
   let tags = await getTags(tmpPath);
 
@@ -89,7 +89,7 @@ async function index({
 
     let message;
 
-    if (copyAnnotation) {
+    if (copyAnnotations) {
       message = originalMessage;
     } else {
       message = await getTagMessage(tag, tmpPath);
