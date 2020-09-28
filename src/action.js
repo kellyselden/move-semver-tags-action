@@ -6,10 +6,10 @@ const yn = require('yn');
 
 (async() => {
   try {
-    let copyAnnotation = yn(core.getInput('copy-annotation'));
+    let copyAnnotations = yn(core.getInput('copy-annotations'));
 
     await index({
-      copyAnnotation
+      copyAnnotations
     });
   } catch (err) {
     core.setFailed(err.message);
