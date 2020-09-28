@@ -6,8 +6,19 @@
 
 Move your SemVer major and minor tags automatically
 
+### As GitHub Action
+
 ```yml
 - uses: kellyselden/move-semver-tags-action@v2
   with:
-    copy-annotations: true
+    copy-annotations: true # optional, default `false`
+```
+
+### As NPM Package
+
+```js
+await require('move-semver-tags-action')({
+  cwd: process.cwd(), // optional, default `process.cwd()`
+  copyAnnotations: true // optional, default `false`
+});
 ```
