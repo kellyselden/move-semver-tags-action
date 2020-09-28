@@ -4,7 +4,7 @@ branding:
   icon: 'tag'
   color: 'purple'
 inputs:
-  copy-annotation:
+  copy-annotations:
     description: 'Copy the annotation from the latest tag'
     default: false
 runs:
