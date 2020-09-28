@@ -2,6 +2,7 @@
 
 ![](https://github.com/kellyselden/move-semver-tags-action/workflows/CI/badge.svg)
 ![](https://github.com/kellyselden/move-semver-tags-action/workflows/Release/badge.svg)
+![](https://github.com/kellyselden/move-semver-tags-action/workflows/Publish/badge.svg)
 
 Move your SemVer major and minor tags automatically
 
