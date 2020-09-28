@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.0...v2.1.1) (2020-09-28)
+
+
+### Bug Fixes
+
+* do npm publish in same release ([a6fbdbd](https://github.com/kellyselden/move-semver-tags-action/commit/a6fbdbd4c361641056b6c6ab3b9230bbaa6daf1a))
+
 ## [2.1.0](https://github.com/kellyselden/move-semver-tags-action/compare/v2.0.1...v2.1.0) (2020-09-28)
 
 
