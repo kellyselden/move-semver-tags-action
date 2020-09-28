@@ -1,7 +1,6 @@
 # move-semver-tags-action
 
 ![](https://github.com/kellyselden/move-semver-tags-action/workflows/CI/badge.svg)
-![](https://github.com/kellyselden/move-semver-tags-action/workflows/Release/badge.svg)
 ![](https://github.com/kellyselden/move-semver-tags-action/workflows/Publish/badge.svg)
 [![npm version](https://badge.fury.io/js/move-semver-tags-action.svg)](https://badge.fury.io/js/move-semver-tags-action)
 
