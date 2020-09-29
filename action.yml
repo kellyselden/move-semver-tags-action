@@ -1,4 +1,4 @@
-name: 'move-semver-tags-action'
+name: 'Move SemVer Tags Action'
 description: 'Move your SemVer major and minor tags automatically'
 branding:
   icon: 'tag'
