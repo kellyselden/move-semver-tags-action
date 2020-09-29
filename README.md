@@ -6,6 +6,10 @@
 
 Move your SemVer major and minor tags automatically
 
+GitHub Actions do SemVer differently than NPM. NPM uses `^` and `~` to calculate latest major and minor versions, but GitHub Actions makes you create `vX` and `vX.X` tags and move them for every new release. This can get tedious, so this action automates this process for you.
+
+For more information, see https://docs.github.com/en/free-pro-team@latest/actions/creating-actions/about-actions#using-tags-for-release-management and https://github.com/actions/toolkit/issues/214 for backstory.
+
 ### As GitHub Action
 
 ```yml
