@@ -206,6 +206,8 @@ describe(function() {
 
     await tag(tmpPathLocal, 'v2.1.1');
 
+    let v2Commit = await getCurrentCommit(tmpPathLocal);
+
     await pushTags(tmpPathLocal);
 
     await index({ cwd: tmpPathLocal });
@@ -232,7 +234,7 @@ describe(function() {
       'v2.0.1'
     ]);
 
-    let v2Tags = await getTagsAtCommit('HEAD', tmpPathRemote);
+    let v2Tags = await getTagsAtCommit(v2Commit, tmpPathRemote);
 
     expect(v2Tags).to.deep.equal([
       'v2              version two',
@@ -280,6 +282,8 @@ describe(function() {
 
     await tag(tmpPathLocal, 'v2.1.1', 'chore(release): 2.1.1');
 
+    let v2Commit = await getCurrentCommit(tmpPathLocal);
+
     await pushTags(tmpPathLocal);
 
     await index({
@@ -309,7 +313,7 @@ describe(function() {
       'v2.0.1          chore(release): 2.0.1'
     ]);
 
-    let v2Tags = await getTagsAtCommit('HEAD', tmpPathRemote);
+    let v2Tags = await getTagsAtCommit(v2Commit, tmpPathRemote);
 
     expect(v2Tags).to.deep.equal([
       'v2              chore(release): 2.1.1',
