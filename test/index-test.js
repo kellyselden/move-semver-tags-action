@@ -28,7 +28,7 @@ async function addAndCommit(tmpPath) {
     cwd: tmpPath
   })).stdout;
 
-  let commit = result.match(/^\[master (.+)\] /)[1];
+  let commit = result.match(/^\[master .*([^ ]+)\] /)[1];
 
   return commit;
 }
@@ -75,35 +75,35 @@ describe(function() {
   });
 
   it('works without floating tags', async function() {
-    await writeAndCommit(tmpPathLocal);
+    let v100Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.0');
 
-    let v10Commit = await writeAndCommit(tmpPathLocal);
+    let v101Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.1');
 
-    await writeAndCommit(tmpPathLocal);
+    let v110Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.0');
 
-    let v1Commit = await writeAndCommit(tmpPathLocal);
+    let v111Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.1');
 
-    await writeAndCommit(tmpPathLocal);
+    let v200Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.0');
 
-    let v20Commit = await writeAndCommit(tmpPathLocal);
+    let v201Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.1');
 
-    await writeAndCommit(tmpPathLocal);
+    let v210Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.0');
 
-    let v2Commit = await writeAndCommit(tmpPathLocal);
+    let v211Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.1');
 
@@ -114,85 +114,101 @@ describe(function() {
     let tags = await getTags(tmpPathRemote);
 
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v10Commit),
-      tag: 'v1.0'
+      commit: sinon.match(v100Commit),
+      tag: 'v1.0.0'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v10Commit),
+      commit: sinon.match(v101Commit),
       tag: 'v1.0.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
-      tag: 'v1'
+      commit: sinon.match(v101Commit),
+      tag: 'v1.0'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
-      tag: 'v1.1'
+      commit: sinon.match(v110Commit),
+      tag: 'v1.1.0'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
+      commit: sinon.match(v111Commit),
       tag: 'v1.1.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v20Commit),
-      tag: 'v2.0'
+      commit: sinon.match(v111Commit),
+      tag: 'v1.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v20Commit),
+      commit: sinon.match(v111Commit),
+      tag: 'v1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v200Commit),
+      tag: 'v2.0.0'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v201Commit),
       tag: 'v2.0.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
-      tag: 'v2'
+      commit: sinon.match(v201Commit),
+      tag: 'v2.0'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
+      commit: sinon.match(v210Commit),
+      tag: 'v2.1.0'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v211Commit),
+      tag: 'v2.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v211Commit),
       tag: 'v2.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
-      tag: 'v2.1.1'
+      commit: sinon.match(v211Commit),
+      tag: 'v2'
     })));
   });
 
   it('works with floating tags', async function() {
-    await writeAndCommit(tmpPathLocal);
+    let v100Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.0');
     await tag(tmpPathLocal, 'v1.0', 'version one dot zero');
     await tag(tmpPathLocal, 'v1', 'version one');
 
-    let v10Commit = await writeAndCommit(tmpPathLocal);
+    let v101Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.1');
 
-    await writeAndCommit(tmpPathLocal);
+    let v110Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.0');
     await tag(tmpPathLocal, 'v1.1', 'version one dot one');
 
-    let v1Commit = await writeAndCommit(tmpPathLocal);
+    let v111Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.1');
 
     await pushTags(tmpPathLocal);
 
-    await writeAndCommit(tmpPathLocal);
+    let v200Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.0');
     await tag(tmpPathLocal, 'v2.0', 'version two dot zero');
     await tag(tmpPathLocal, 'v2', 'version two');
 
-    let v20Commit = await writeAndCommit(tmpPathLocal);
+    let v201Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.1');
 
-    await writeAndCommit(tmpPathLocal);
+    let v210Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.0');
     await tag(tmpPathLocal, 'v2.1', 'version two dot one');
 
-    let v2Commit = await writeAndCommit(tmpPathLocal);
+    let v211Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.1');
 
@@ -203,83 +219,99 @@ describe(function() {
     let tags = await getTags(tmpPathRemote);
 
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v10Commit),
+      commit: sinon.match(v100Commit),
+      tag: 'v1.0.0'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v101Commit),
+      tag: 'v1.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v101Commit),
       tag: 'v1.0',
       message: 'version one dot zero'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v10Commit),
-      tag: 'v1.0.1'
+      commit: sinon.match(v110Commit),
+      tag: 'v1.1.0'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
-      tag: 'v1',
-      message: 'version one'
+      commit: sinon.match(v111Commit),
+      tag: 'v1.1.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
+      commit: sinon.match(v111Commit),
       tag: 'v1.1',
       message: 'version one dot one'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
-      tag: 'v1.1.1'
+      commit: sinon.match(v111Commit),
+      tag: 'v1',
+      message: 'version one'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v20Commit),
+      commit: sinon.match(v200Commit),
+      tag: 'v2.0.0'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v201Commit),
+      tag: 'v2.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v201Commit),
       tag: 'v2.0',
       message: 'version two dot zero'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v20Commit),
-      tag: 'v2.0.1'
+      commit: sinon.match(v210Commit),
+      tag: 'v2.1.0'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
-      tag: 'v2',
-      message: 'version two'
+      commit: sinon.match(v211Commit),
+      tag: 'v2.1.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
+      commit: sinon.match(v211Commit),
       tag: 'v2.1',
       message: 'version two dot one'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
-      tag: 'v2.1.1'
+      commit: sinon.match(v211Commit),
+      tag: 'v2',
+      message: 'version two'
     })));
   });
 
   it('can copy the annotation', async function() {
-    await writeAndCommit(tmpPathLocal);
+    let v100Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.0', 'chore(release): 1.0.0');
 
-    let v10Commit = await writeAndCommit(tmpPathLocal);
+    let v101Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.1', 'chore(release): 1.0.1');
 
-    await writeAndCommit(tmpPathLocal);
+    let v110Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.0', 'chore(release): 1.1.0');
 
-    let v1Commit = await writeAndCommit(tmpPathLocal);
+    let v111Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.1', 'chore(release): 1.1.1');
 
-    await writeAndCommit(tmpPathLocal);
+    let v200Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.0', 'chore(release): 2.0.0');
 
-    let v20Commit = await writeAndCommit(tmpPathLocal);
+    let v201Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.1', 'chore(release): 2.0.1');
 
-    await writeAndCommit(tmpPathLocal);
+    let v210Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.0', 'chore(release): 2.1.0');
 
-    let v2Commit = await writeAndCommit(tmpPathLocal);
+    let v211Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.1', 'chore(release): 2.1.1');
 
@@ -293,53 +325,73 @@ describe(function() {
     let tags = await getTags(tmpPathRemote);
 
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v10Commit),
-      tag: 'v1.0',
-      message: 'chore(release): 1.0.1'
+      commit: sinon.match(v100Commit),
+      tag: 'v1.0.0',
+      message: 'chore(release): 1.0.0'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v10Commit),
+      commit: sinon.match(v101Commit),
       tag: 'v1.0.1',
       message: 'chore(release): 1.0.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
-      tag: 'v1',
-      message: 'chore(release): 1.1.1'
+      commit: sinon.match(v101Commit),
+      tag: 'v1.0',
+      message: 'chore(release): 1.0.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
-      tag: 'v1.1',
-      message: 'chore(release): 1.1.1'
+      commit: sinon.match(v110Commit),
+      tag: 'v1.1.0',
+      message: 'chore(release): 1.1.0'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v1Commit),
+      commit: sinon.match(v111Commit),
       tag: 'v1.1.1',
       message: 'chore(release): 1.1.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v20Commit),
-      tag: 'v2.0',
-      message: 'chore(release): 2.0.1'
+      commit: sinon.match(v111Commit),
+      tag: 'v1.1',
+      message: 'chore(release): 1.1.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v20Commit),
+      commit: sinon.match(v111Commit),
+      tag: 'v1',
+      message: 'chore(release): 1.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v200Commit),
+      tag: 'v2.0.0',
+      message: 'chore(release): 2.0.0'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v201Commit),
       tag: 'v2.0.1',
       message: 'chore(release): 2.0.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
-      tag: 'v2',
+      commit: sinon.match(v201Commit),
+      tag: 'v2.0',
+      message: 'chore(release): 2.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v210Commit),
+      tag: 'v2.1.0',
+      message: 'chore(release): 2.1.0'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v211Commit),
+      tag: 'v2.1.1',
       message: 'chore(release): 2.1.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
+      commit: sinon.match(v211Commit),
       tag: 'v2.1',
       message: 'chore(release): 2.1.1'
     })));
     expect(tags).to.match(sinon.match.some(sinon.match({
-      commit: sinon.match(v2Commit),
-      tag: 'v2.1.1',
+      commit: sinon.match(v211Commit),
+      tag: 'v2',
       message: 'chore(release): 2.1.1'
     })));
   });
