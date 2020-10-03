@@ -73,6 +73,8 @@ async function getTagsAtCommit(commit, tmpPath) {
 }
 
 describe(function() {
+  this.timeout(5e3);
+
   let tmpPathLocal;
   let tmpPathRemote;
 
