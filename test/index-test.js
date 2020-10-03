@@ -53,11 +53,7 @@ async function cloneRemote(localPath, remotePath) {
 }
 
 async function pushTags(tmpPath) {
-  await execa('git', ['push', '--set-upstream', 'origin', 'master'], {
-    cwd: tmpPath
-  });
-
-  await execa('git', ['push', '--tags'], {
+  await execa('git', ['push', '--set-upstream', 'origin', 'master', '--follow-tags'], {
     cwd: tmpPath
   });
 }
