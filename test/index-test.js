@@ -70,7 +70,6 @@ describe(function() {
     tmpPathRemote = await createTmpDir();
 
     await gitInit({ cwd: tmpPathLocal });
-    await execa('git', ['commit', '--allow-empty', '-m', 'first'], { cwd: tmpPathLocal });
 
     await cloneRemote(tmpPathLocal, tmpPathRemote);
   });
