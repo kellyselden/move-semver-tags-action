@@ -21,9 +21,13 @@ async function addAndCommit(tmpPath) {
     cwd: tmpPath
   });
 
-  await execa('git', ['commit', '-m', 'foo'], {
+  let result = (await execa('git', ['commit', '-m', 'foo'], {
     cwd: tmpPath
-  });
+  })).stdout;
+
+  let commit = result.match(/^\[master (.+)\] /)[1];
+
+  return commit;
 }
 
 async function tag(tmpPath, tag, message = '') {
@@ -32,16 +36,10 @@ async function tag(tmpPath, tag, message = '') {
   });
 }
 
-async function getCurrentCommit(tmpPath) {
-  return (await execa('git', ['rev-parse', 'HEAD'], {
-    cwd: tmpPath
-  })).stdout;
-}
-
 async function writeAndCommit(tmpPath) {
   await writeRandomFile(tmpPath);
 
-  await addAndCommit(tmpPath);
+  return await addAndCommit(tmpPath);
 }
 
 async function cloneRemote(localPath, remotePath) {
@@ -79,6 +77,7 @@ describe(function() {
     tmpPathRemote = await createTmpDir();
 
     await gitInit({ cwd: tmpPathLocal });
+    await execa('git', ['commit', '--allow-empty', '-m', 'first'], { cwd: tmpPathLocal });
 
     await cloneRemote(tmpPathLocal, tmpPathRemote);
   });
@@ -88,41 +87,33 @@ describe(function() {
 
     await tag(tmpPathLocal, 'v1.0.0');
 
-    await writeAndCommit(tmpPathLocal);
+    let v10Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.1');
-
-    let v10Commit = await getCurrentCommit(tmpPathLocal);
 
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.0');
 
-    await writeAndCommit(tmpPathLocal);
+    let v1Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.1');
-
-    let v1Commit = await getCurrentCommit(tmpPathLocal);
 
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.0');
 
-    await writeAndCommit(tmpPathLocal);
+    let v20Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.1');
-
-    let v20Commit = await getCurrentCommit(tmpPathLocal);
 
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.0');
 
-    await writeAndCommit(tmpPathLocal);
+    let v2Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.1');
-
-    let v2Commit = await getCurrentCommit(tmpPathLocal);
 
     await pushTags(tmpPathLocal);
 
@@ -166,24 +157,20 @@ describe(function() {
     await tag(tmpPathLocal, 'v1.0', 'version one dot zero');
     await tag(tmpPathLocal, 'v1', 'version one');
 
-    await writeAndCommit(tmpPathLocal);
+    let v10Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.1');
-
-    let v10Commit = await getCurrentCommit(tmpPathLocal);
 
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.0');
     await tag(tmpPathLocal, 'v1.1', 'version one dot one');
 
-    await writeAndCommit(tmpPathLocal);
+    let v1Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.1');
 
     await pushTags(tmpPathLocal);
-
-    let v1Commit = await getCurrentCommit(tmpPathRemote);
 
     await writeAndCommit(tmpPathLocal);
 
@@ -191,22 +178,18 @@ describe(function() {
     await tag(tmpPathLocal, 'v2.0', 'version two dot zero');
     await tag(tmpPathLocal, 'v2', 'version two');
 
-    await writeAndCommit(tmpPathLocal);
+    let v20Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.1');
-
-    let v20Commit = await getCurrentCommit(tmpPathLocal);
 
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.0');
     await tag(tmpPathLocal, 'v2.1', 'version two dot one');
 
-    await writeAndCommit(tmpPathLocal);
+    let v2Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.1');
-
-    let v2Commit = await getCurrentCommit(tmpPathLocal);
 
     await pushTags(tmpPathLocal);
 
@@ -248,41 +231,33 @@ describe(function() {
 
     await tag(tmpPathLocal, 'v1.0.0', 'chore(release): 1.0.0');
 
-    await writeAndCommit(tmpPathLocal);
+    let v10Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.0.1', 'chore(release): 1.0.1');
-
-    let v10Commit = await getCurrentCommit(tmpPathLocal);
 
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.0', 'chore(release): 1.1.0');
 
-    await writeAndCommit(tmpPathLocal);
+    let v1Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v1.1.1', 'chore(release): 1.1.1');
-
-    let v1Commit = await getCurrentCommit(tmpPathLocal);
 
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.0', 'chore(release): 2.0.0');
 
-    await writeAndCommit(tmpPathLocal);
+    let v20Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.0.1', 'chore(release): 2.0.1');
-
-    let v20Commit = await getCurrentCommit(tmpPathLocal);
 
     await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.0', 'chore(release): 2.1.0');
 
-    await writeAndCommit(tmpPathLocal);
+    let v2Commit = await writeAndCommit(tmpPathLocal);
 
     await tag(tmpPathLocal, 'v2.1.1', 'chore(release): 2.1.1');
-
-    let v2Commit = await getCurrentCommit(tmpPathLocal);
 
     await pushTags(tmpPathLocal);
 
