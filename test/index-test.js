@@ -169,8 +169,6 @@ describe(function() {
 
     let v111Commit = await writeAndTag(tmpPathLocal, 'v1.1.1');
 
-    await pushTags(tmpPathLocal);
-
     let v200Commit = await writeAndTag(tmpPathLocal, 'v2.0.0');
 
     await tag(tmpPathLocal, 'v2.0', 'version two dot zero');
