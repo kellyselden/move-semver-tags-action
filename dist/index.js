@@ -3852,43 +3852,11 @@ if (process.platform === 'linux') {
 
 
 const execa = __webpack_require__(955);
-const { EOL } = __webpack_require__(87);
 const semver = __webpack_require__(876);
-
-async function getTags(tmpPath) {
-  let { stdout } = await execa('git', [
-    'for-each-ref',
-    '--sort',
-    '-v:refname',
-    '--format',
-    '%(*objectname) %(tag) %(subject)',
-    'refs/tags'
-  ], {
-    cwd: tmpPath
-  });
-
-  let lines = stdout.split(EOL);
-
-  let tags = lines.map(line => {
-    let [commit, tag, ...message] = line.split(' ');
-
-    return {
-      commit,
-      tag,
-      message: message.join(' ')
-    };
-  });
-
-  return tags;
-}
-
-async function getTagMessage(tag, cwd) {
-  let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
-    cwd
-  })).stdout.trim();
-
-  return message;
-}
+const {
+  getTags,
+  getTagMessage
+} = __webpack_require__(718);
 
 async function index({
   cwd: tmpPath = process.cwd(),
@@ -3988,6 +3956,58 @@ const valid = (version, options) => {
   return v ? v.version : null
 }
 module.exports = valid
+
+
+/***/ }),
+
+/***/ 718:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+"use strict";
+
+
+const execa = __webpack_require__(955);
+const { EOL } = __webpack_require__(87);
+
+async function getTags(tmpPath) {
+  let { stdout } = await execa('git', [
+    'for-each-ref',
+    '--sort',
+    '-v:refname',
+    '--format',
+    '%(*objectname) %(tag) %(subject)',
+    'refs/tags'
+  ], {
+    cwd: tmpPath
+  });
+
+  let lines = stdout.split(EOL);
+
+  let tags = lines.map(line => {
+    let [commit, tag, ...message] = line.split(' ');
+
+    return {
+      commit,
+      tag,
+      message: message.join(' ')
+    };
+  });
+
+  return tags;
+}
+
+async function getTagMessage(tag, cwd) {
+  let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
+    cwd
+  })).stdout.trim();
+
+  return message;
+}
+
+module.exports = {
+  getTags,
+  getTagMessage
+};
 
 
 /***/ }),
