@@ -10,7 +10,10 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 const writeFile = promisify(fs.writeFile);
-const { EOL } = require('os');
+const sinon = require('sinon');
+const {
+  getTags
+} = require('../src/git');
 
 async function writeRandomFile(tmpPath) {
   await writeFile(path.join(tmpPath, Math.random().toString()), Math.random().toString());
@@ -54,16 +57,6 @@ async function pushTags(tmpPath) {
   await execa('git', ['push', '--set-upstream', 'origin', 'master', '--follow-tags'], {
     cwd: tmpPath
   });
-}
-
-async function getTagsAtCommit(commit, tmpPath) {
-  let tags = (await execa('git', ['tag', '-n99', '--points-at', commit], {
-    cwd: tmpPath
-  })).stdout;
-
-  tags = tags.split(EOL).map(tag => tag.trim());
-
-  return tags;
 }
 
 describe(function() {
@@ -119,35 +112,48 @@ describe(function() {
 
     await index({ cwd: tmpPathLocal });
 
-    let v10Tags = await getTagsAtCommit(v10Commit, tmpPathRemote);
+    let tags = await getTags(tmpPathRemote);
 
-    expect(v10Tags).to.deep.equal([
-      'v1.0',
-      'v1.0.1'
-    ]);
-
-    let v1Tags = await getTagsAtCommit(v1Commit, tmpPathRemote);
-
-    expect(v1Tags).to.deep.equal([
-      'v1',
-      'v1.1',
-      'v1.1.1'
-    ]);
-
-    let v20Tags = await getTagsAtCommit(v20Commit, tmpPathRemote);
-
-    expect(v20Tags).to.deep.equal([
-      'v2.0',
-      'v2.0.1'
-    ]);
-
-    let v2Tags = await getTagsAtCommit(v2Commit, tmpPathRemote);
-
-    expect(v2Tags).to.deep.equal([
-      'v2',
-      'v2.1',
-      'v2.1.1'
-    ]);
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v10Commit),
+      tag: 'v1.0'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v10Commit),
+      tag: 'v1.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v20Commit),
+      tag: 'v2.0'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v20Commit),
+      tag: 'v2.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2.1.1'
+    })));
   });
 
   it('works with floating tags', async function() {
@@ -195,35 +201,54 @@ describe(function() {
 
     await index({ cwd: tmpPathLocal });
 
-    let v10Tags = await getTagsAtCommit(v10Commit, tmpPathRemote);
+    let tags = await getTags(tmpPathRemote);
 
-    expect(v10Tags).to.deep.equal([
-      'v1.0            version one dot zero',
-      'v1.0.1'
-    ]);
-
-    let v1Tags = await getTagsAtCommit(v1Commit, tmpPathRemote);
-
-    expect(v1Tags).to.deep.equal([
-      'v1              version one',
-      'v1.1            version one dot one',
-      'v1.1.1'
-    ]);
-
-    let v20Tags = await getTagsAtCommit(v20Commit, tmpPathRemote);
-
-    expect(v20Tags).to.deep.equal([
-      'v2.0            version two dot zero',
-      'v2.0.1'
-    ]);
-
-    let v2Tags = await getTagsAtCommit(v2Commit, tmpPathRemote);
-
-    expect(v2Tags).to.deep.equal([
-      'v2              version two',
-      'v2.1            version two dot one',
-      'v2.1.1'
-    ]);
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v10Commit),
+      tag: 'v1.0',
+      message: 'version one dot zero'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v10Commit),
+      tag: 'v1.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1',
+      message: 'version one'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1.1',
+      message: 'version one dot one'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v20Commit),
+      tag: 'v2.0',
+      message: 'version two dot zero'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v20Commit),
+      tag: 'v2.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2',
+      message: 'version two'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2.1',
+      message: 'version two dot one'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2.1.1'
+    })));
   });
 
   it('can copy the annotation', async function() {
@@ -266,34 +291,57 @@ describe(function() {
       copyAnnotations: true
     });
 
-    let v10Tags = await getTagsAtCommit(v10Commit, tmpPathRemote);
+    let tags = await getTags(tmpPathRemote);
 
-    expect(v10Tags).to.deep.equal([
-      'v1.0            chore(release): 1.0.1',
-      'v1.0.1          chore(release): 1.0.1'
-    ]);
-
-    let v1Tags = await getTagsAtCommit(v1Commit, tmpPathRemote);
-
-    expect(v1Tags).to.deep.equal([
-      'v1              chore(release): 1.1.1',
-      'v1.1            chore(release): 1.1.1',
-      'v1.1.1          chore(release): 1.1.1'
-    ]);
-
-    let v20Tags = await getTagsAtCommit(v20Commit, tmpPathRemote);
-
-    expect(v20Tags).to.deep.equal([
-      'v2.0            chore(release): 2.0.1',
-      'v2.0.1          chore(release): 2.0.1'
-    ]);
-
-    let v2Tags = await getTagsAtCommit(v2Commit, tmpPathRemote);
-
-    expect(v2Tags).to.deep.equal([
-      'v2              chore(release): 2.1.1',
-      'v2.1            chore(release): 2.1.1',
-      'v2.1.1          chore(release): 2.1.1'
-    ]);
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v10Commit),
+      tag: 'v1.0',
+      message: 'chore(release): 1.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v10Commit),
+      tag: 'v1.0.1',
+      message: 'chore(release): 1.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1',
+      message: 'chore(release): 1.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1.1',
+      message: 'chore(release): 1.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v1Commit),
+      tag: 'v1.1.1',
+      message: 'chore(release): 1.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v20Commit),
+      tag: 'v2.0',
+      message: 'chore(release): 2.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v20Commit),
+      tag: 'v2.0.1',
+      message: 'chore(release): 2.0.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2',
+      message: 'chore(release): 2.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2.1',
+      message: 'chore(release): 2.1.1'
+    })));
+    expect(tags).to.match(sinon.match.some(sinon.match({
+      commit: sinon.match(v2Commit),
+      tag: 'v2.1.1',
+      message: 'chore(release): 2.1.1'
+    })));
   });
 });
