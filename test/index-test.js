@@ -19,20 +19,6 @@ async function writeRandomFile(tmpPath) {
   await writeFile(path.join(tmpPath, Math.random().toString()), Math.random().toString());
 }
 
-async function addAndCommit(tmpPath) {
-  await execa('git', ['add', '.'], {
-    cwd: tmpPath
-  });
-
-  let result = (await execa('git', ['commit', '-m', 'foo'], {
-    cwd: tmpPath
-  })).stdout;
-
-  let commit = result.match(/^\[master .*([^ ]+)\] /)[1];
-
-  return commit;
-}
-
 async function cloneRemote(localPath, remotePath) {
   await execa('git', ['clone', '--bare', localPath, remotePath]);
 
@@ -53,10 +39,24 @@ describe(function() {
   let tmpPathLocal;
   let tmpPathRemote;
 
+  async function addAndCommit() {
+    await execa('git', ['add', '.'], {
+      cwd: tmpPathLocal
+    });
+
+    let result = (await execa('git', ['commit', '-m', 'foo'], {
+      cwd: tmpPathLocal
+    })).stdout;
+
+    let commit = result.match(/^\[master .*([^ ]+)\] /)[1];
+
+    return commit;
+  }
+
   async function writeAndCommit() {
     await writeRandomFile(tmpPathLocal);
 
-    return await addAndCommit(tmpPathLocal);
+    return await addAndCommit();
   }
 
   async function tag(tag, message = '') {
