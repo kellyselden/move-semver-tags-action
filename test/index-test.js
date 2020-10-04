@@ -15,10 +15,6 @@ const {
   getTags
 } = require('../src/git');
 
-async function writeRandomFile(tmpPath) {
-  await writeFile(path.join(tmpPath, Math.random().toString()), Math.random().toString());
-}
-
 async function cloneRemote(localPath, remotePath) {
   await execa('git', ['clone', '--bare', localPath, remotePath]);
 
@@ -39,6 +35,10 @@ describe(function() {
   let tmpPathLocal;
   let tmpPathRemote;
 
+  async function writeRandomFile() {
+    await writeFile(path.join(tmpPathLocal, Math.random().toString()), Math.random().toString());
+  }
+
   async function addAndCommit() {
     await execa('git', ['add', '.'], {
       cwd: tmpPathLocal
@@ -54,7 +54,7 @@ describe(function() {
   }
 
   async function writeAndCommit() {
-    await writeRandomFile(tmpPathLocal);
+    await writeRandomFile();
 
     return await addAndCommit();
   }
