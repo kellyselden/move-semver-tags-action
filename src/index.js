@@ -3,8 +3,7 @@
 const execa = require('execa');
 const semver = require('semver');
 const {
-  getTags,
-  getTagMessage
+  getTags
 } = require('./git');
 
 async function moveSemverTags({
@@ -21,6 +20,11 @@ async function moveSemverTags({
     tag,
     message
   } of tags) {
+    tagsObj[tag] = {
+      commit,
+      message
+    };
+
     if (semver.valid(tag) === null) {
       continue;
     }
@@ -37,12 +41,10 @@ async function moveSemverTags({
     majorsAndMinors[`v${major}`] = major.toString();
     majorsAndMinors[`v${major}.${minor}`] = `~${majorMinor}`;
 
-    tagsObj[tag] = {
+    Object.assign(tagsObj[tag], {
       major: `v${major}`,
-      minor: `v${major}.${minor}`,
-      commit,
-      message
-    };
+      minor: `v${major}.${minor}`
+    });
   }
 
   let newTags = [];
@@ -60,7 +62,7 @@ async function moveSemverTags({
     if (copyAnnotations) {
       message = originalMessage;
     } else {
-      message = await getTagMessage(tag, tmpPath);
+      message = tagsObj[tag] ? tagsObj[tag].message : '';
     }
 
     await execa('git', ['tag', '-a', tag, commit, '--force', '-m', message], {

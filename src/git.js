@@ -30,15 +30,6 @@ async function getTags(tmpPath) {
   return tags;
 }
 
-async function getTagMessage(tag, cwd) {
-  let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
-    cwd
-  })).stdout.trim();
-
-  return message;
-}
-
 module.exports = {
-  getTags,
-  getTagMessage
+  getTags
 };
