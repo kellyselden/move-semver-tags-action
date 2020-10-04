@@ -3858,7 +3858,7 @@ const {
   getTagMessage
 } = __webpack_require__(718);
 
-async function index({
+async function moveSemverTags({
   cwd: tmpPath = process.cwd(),
   copyAnnotations
 }) {
@@ -3926,7 +3926,7 @@ async function index({
   });
 }
 
-module.exports = index;
+module.exports = moveSemverTags;
 
 
 /***/ }),

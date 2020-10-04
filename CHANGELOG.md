@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.20](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.19...v2.1.20) (2020-10-04)
+
+
+### Bug Fixes
+
+* rename `index` to `moveSemverTags` ([e9593b2](https://github.com/kellyselden/move-semver-tags-action/commit/e9593b21fbe5aa2d15305b94d380f0fd85a62bca))
+
 ### [2.1.19](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.18...v2.1.19) (2020-10-04)
 
 
