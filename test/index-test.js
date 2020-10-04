@@ -85,10 +85,11 @@ describe(function() {
   async function expectTags(expected) {
     let actual = await getTags(tmpPathRemote);
 
-    for (let tag of expected) {
+    for (let [commit, tag, message] of expected) {
       expect(actual).to.match(sinon.match.some(sinon.match({
-        ...tag,
-        commit: sinon.match(tag.commit)
+        commit: sinon.match(commit),
+        tag,
+        ...message ? { message } : {}
       })));
     }
   }
@@ -115,62 +116,20 @@ describe(function() {
     await runTest();
 
     await expectTags([
-      {
-        commit: v100Commit,
-        tag: 'v1.0.0'
-      },
-      {
-        commit: v101Commit,
-        tag: 'v1.0.1'
-      },
-      {
-        commit: v101Commit,
-        tag: 'v1.0'
-      },
-      {
-        commit: v110Commit,
-        tag: 'v1.1.0'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1.1.1'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1.1'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1'
-      },
-      {
-        commit: v200Commit,
-        tag: 'v2.0.0'
-      },
-      {
-        commit: v201Commit,
-        tag: 'v2.0.1'
-      },
-      {
-        commit: v201Commit,
-        tag: 'v2.0'
-      },
-      {
-        commit: v210Commit,
-        tag: 'v2.1.0'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2.1.1'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2.1'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2'
-      }
+      [v100Commit, 'v1.0.0'],
+      [v101Commit, 'v1.0.1'],
+      [v101Commit, 'v1.0'],
+      [v110Commit, 'v1.1.0'],
+      [v111Commit, 'v1.1.1'],
+      [v111Commit, 'v1.1'],
+      [v111Commit, 'v1'],
+      [v200Commit, 'v2.0.0'],
+      [v201Commit, 'v2.0.1'],
+      [v201Commit, 'v2.0'],
+      [v210Commit, 'v2.1.0'],
+      [v211Commit, 'v2.1.1'],
+      [v211Commit, 'v2.1'],
+      [v211Commit, 'v2']
     ]);
   });
 
@@ -201,68 +160,20 @@ describe(function() {
     await runTest();
 
     await expectTags([
-      {
-        commit: v100Commit,
-        tag: 'v1.0.0'
-      },
-      {
-        commit: v101Commit,
-        tag: 'v1.0.1'
-      },
-      {
-        commit: v101Commit,
-        tag: 'v1.0',
-        message: 'version one dot zero'
-      },
-      {
-        commit: v110Commit,
-        tag: 'v1.1.0'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1.1.1'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1.1',
-        message: 'version one dot one'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1',
-        message: 'version one'
-      },
-      {
-        commit: v200Commit,
-        tag: 'v2.0.0'
-      },
-      {
-        commit: v201Commit,
-        tag: 'v2.0.1'
-      },
-      {
-        commit: v201Commit,
-        tag: 'v2.0',
-        message: 'version two dot zero'
-      },
-      {
-        commit: v210Commit,
-        tag: 'v2.1.0'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2.1.1'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2.1',
-        message: 'version two dot one'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2',
-        message: 'version two'
-      }
+      [v100Commit, 'v1.0.0'],
+      [v101Commit, 'v1.0.1'],
+      [v101Commit, 'v1.0', 'version one dot zero'],
+      [v110Commit, 'v1.1.0'],
+      [v111Commit, 'v1.1.1'],
+      [v111Commit, 'v1.1', 'version one dot one'],
+      [v111Commit, 'v1', 'version one'],
+      [v200Commit, 'v2.0.0'],
+      [v201Commit, 'v2.0.1'],
+      [v201Commit, 'v2.0', 'version two dot zero'],
+      [v210Commit, 'v2.1.0'],
+      [v211Commit, 'v2.1.1'],
+      [v211Commit, 'v2.1', 'version two dot one'],
+      [v211Commit, 'v2', 'version two']
     ]);
   });
 
@@ -281,76 +192,20 @@ describe(function() {
     });
 
     await expectTags([
-      {
-        commit: v100Commit,
-        tag: 'v1.0.0',
-        message: 'chore(release): 1.0.0'
-      },
-      {
-        commit: v101Commit,
-        tag: 'v1.0.1',
-        message: 'chore(release): 1.0.1'
-      },
-      {
-        commit: v101Commit,
-        tag: 'v1.0',
-        message: 'chore(release): 1.0.1'
-      },
-      {
-        commit: v110Commit,
-        tag: 'v1.1.0',
-        message: 'chore(release): 1.1.0'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1.1.1',
-        message: 'chore(release): 1.1.1'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1.1',
-        message: 'chore(release): 1.1.1'
-      },
-      {
-        commit: v111Commit,
-        tag: 'v1',
-        message: 'chore(release): 1.1.1'
-      },
-      {
-        commit: v200Commit,
-        tag: 'v2.0.0',
-        message: 'chore(release): 2.0.0'
-      },
-      {
-        commit: v201Commit,
-        tag: 'v2.0.1',
-        message: 'chore(release): 2.0.1'
-      },
-      {
-        commit: v201Commit,
-        tag: 'v2.0',
-        message: 'chore(release): 2.0.1'
-      },
-      {
-        commit: v210Commit,
-        tag: 'v2.1.0',
-        message: 'chore(release): 2.1.0'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2.1.1',
-        message: 'chore(release): 2.1.1'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2.1',
-        message: 'chore(release): 2.1.1'
-      },
-      {
-        commit: v211Commit,
-        tag: 'v2',
-        message: 'chore(release): 2.1.1'
-      }
+      [v100Commit, 'v1.0.0', 'chore(release): 1.0.0'],
+      [v101Commit, 'v1.0.1', 'chore(release): 1.0.1'],
+      [v101Commit, 'v1.0', 'chore(release): 1.0.1'],
+      [v110Commit, 'v1.1.0', 'chore(release): 1.1.0'],
+      [v111Commit, 'v1.1.1', 'chore(release): 1.1.1'],
+      [v111Commit, 'v1.1', 'chore(release): 1.1.1'],
+      [v111Commit, 'v1', 'chore(release): 1.1.1'],
+      [v200Commit, 'v2.0.0', 'chore(release): 2.0.0'],
+      [v201Commit, 'v2.0.1', 'chore(release): 2.0.1'],
+      [v201Commit, 'v2.0', 'chore(release): 2.0.1'],
+      [v210Commit, 'v2.1.0', 'chore(release): 2.1.0'],
+      [v211Commit, 'v2.1.1', 'chore(release): 2.1.1'],
+      [v211Commit, 'v2.1', 'chore(release): 2.1.1'],
+      [v211Commit, 'v2', 'chore(release): 2.1.1']
     ]);
   });
 });
