@@ -3854,8 +3854,7 @@ if (process.platform === 'linux') {
 const execa = __webpack_require__(955);
 const semver = __webpack_require__(876);
 const {
-  getTags,
-  getTagMessage
+  getTags
 } = __webpack_require__(718);
 
 async function moveSemverTags({
@@ -3872,6 +3871,11 @@ async function moveSemverTags({
     tag,
     message
   } of tags) {
+    tagsObj[tag] = {
+      commit,
+      message
+    };
+
     if (semver.valid(tag) === null) {
       continue;
     }
@@ -3888,12 +3892,10 @@ async function moveSemverTags({
     majorsAndMinors[`v${major}`] = major.toString();
     majorsAndMinors[`v${major}.${minor}`] = `~${majorMinor}`;
 
-    tagsObj[tag] = {
+    Object.assign(tagsObj[tag], {
       major: `v${major}`,
-      minor: `v${major}.${minor}`,
-      commit,
-      message
-    };
+      minor: `v${major}.${minor}`
+    });
   }
 
   let newTags = [];
@@ -3911,7 +3913,7 @@ async function moveSemverTags({
     if (copyAnnotations) {
       message = originalMessage;
     } else {
-      message = await getTagMessage(tag, tmpPath);
+      message = tagsObj[tag] ? tagsObj[tag].message : '';
     }
 
     await execa('git', ['tag', '-a', tag, commit, '--force', '-m', message], {
@@ -3990,17 +3992,8 @@ async function getTags(tmpPath) {
   return tags;
 }
 
-async function getTagMessage(tag, cwd) {
-  let message = (await execa('git', ['for-each-ref', `refs/tags/${tag}`, '--format=%(contents)'], {
-    cwd
-  })).stdout.trim();
-
-  return message;
-}
-
 module.exports = {
-  getTags,
-  getTagMessage
+  getTags
 };
 
 
