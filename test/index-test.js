@@ -2,7 +2,7 @@
 
 const { describe } = require('./helpers/mocha');
 const { expect } = require('./helpers/chai');
-const index = require('../src');
+const moveSemverTags = require('../src');
 const { createTmpDir } = require('./helpers/tmp');
 const { gitInit } = require('git-fixtures');
 const execa = require('execa');
@@ -105,7 +105,7 @@ describe(function() {
 
     await pushTags(tmpPathLocal);
 
-    await index({ cwd: tmpPathLocal });
+    await moveSemverTags({ cwd: tmpPathLocal });
 
     await expectTags([
       {
@@ -193,7 +193,7 @@ describe(function() {
 
     await pushTags(tmpPathLocal);
 
-    await index({ cwd: tmpPathLocal });
+    await moveSemverTags({ cwd: tmpPathLocal });
 
     await expectTags([
       {
@@ -273,7 +273,7 @@ describe(function() {
 
     await pushTags(tmpPathLocal);
 
-    await index({
+    await moveSemverTags({
       cwd: tmpPathLocal,
       copyAnnotations: true
     });
