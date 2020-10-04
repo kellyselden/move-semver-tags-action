@@ -7,7 +7,7 @@ const {
   getTagMessage
 } = require('./git');
 
-async function index({
+async function moveSemverTags({
   cwd: tmpPath = process.cwd(),
   copyAnnotations
 }) {
@@ -75,4 +75,4 @@ async function index({
   });
 }
 
-module.exports = index;
+module.exports = moveSemverTags;
