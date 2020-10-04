@@ -33,12 +33,6 @@ async function addAndCommit(tmpPath) {
   return commit;
 }
 
-async function tag(tmpPath, tag, message = '') {
-  await execa('git', ['tag', tag, '-m', message], {
-    cwd: tmpPath
-  });
-}
-
 async function cloneRemote(localPath, remotePath) {
   await execa('git', ['clone', '--bare', localPath, remotePath]);
 
@@ -65,10 +59,16 @@ describe(function() {
     return await addAndCommit(tmpPathLocal);
   }
 
+  async function tag(tag, message = '') {
+    await execa('git', ['tag', tag, '-m', message], {
+      cwd: tmpPathLocal
+    });
+  }
+
   async function writeAndTag(...args) {
     let commit = await writeAndCommit();
 
-    await tag(tmpPathLocal, ...args);
+    await tag(...args);
 
     return commit;
   }
@@ -170,24 +170,24 @@ describe(function() {
   it('works with floating tags', async function() {
     let v100Commit = await writeAndTag('v1.0.0');
 
-    await tag(tmpPathLocal, 'v1.0', 'version one dot zero');
-    await tag(tmpPathLocal, 'v1', 'version one');
+    await tag('v1.0', 'version one dot zero');
+    await tag('v1', 'version one');
 
     let v101Commit = await writeAndTag('v1.0.1');
     let v110Commit = await writeAndTag('v1.1.0');
 
-    await tag(tmpPathLocal, 'v1.1', 'version one dot one');
+    await tag('v1.1', 'version one dot one');
 
     let v111Commit = await writeAndTag('v1.1.1');
     let v200Commit = await writeAndTag('v2.0.0');
 
-    await tag(tmpPathLocal, 'v2.0', 'version two dot zero');
-    await tag(tmpPathLocal, 'v2', 'version two');
+    await tag('v2.0', 'version two dot zero');
+    await tag('v2', 'version two');
 
     let v201Commit = await writeAndTag('v2.0.1');
     let v210Commit = await writeAndTag('v2.1.0');
 
-    await tag(tmpPathLocal, 'v2.1', 'version two dot one');
+    await tag('v2.1', 'version two dot one');
 
     let v211Commit = await writeAndTag('v2.1.1');
 
