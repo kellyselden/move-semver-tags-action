@@ -23,12 +23,6 @@ async function cloneRemote(localPath, remotePath) {
   });
 }
 
-async function pushTags(tmpPath) {
-  await execa('git', ['push', '--set-upstream', 'origin', 'master', '--follow-tags'], {
-    cwd: tmpPath
-  });
-}
-
 describe(function() {
   this.timeout(5e3);
 
@@ -73,6 +67,12 @@ describe(function() {
     return commit;
   }
 
+  async function pushTags() {
+    await execa('git', ['push', '--set-upstream', 'origin', 'master', '--follow-tags'], {
+      cwd: tmpPathLocal
+    });
+  }
+
   async function expectTags(expected) {
     let actual = await getTags(tmpPathRemote);
 
@@ -103,7 +103,7 @@ describe(function() {
     let v210Commit = await writeAndTag('v2.1.0');
     let v211Commit = await writeAndTag('v2.1.1');
 
-    await pushTags(tmpPathLocal);
+    await pushTags();
 
     await moveSemverTags({ cwd: tmpPathLocal });
 
@@ -191,7 +191,7 @@ describe(function() {
 
     let v211Commit = await writeAndTag('v2.1.1');
 
-    await pushTags(tmpPathLocal);
+    await pushTags();
 
     await moveSemverTags({ cwd: tmpPathLocal });
 
@@ -271,7 +271,7 @@ describe(function() {
     let v210Commit = await writeAndTag('v2.1.0', 'chore(release): 2.1.0');
     let v211Commit = await writeAndTag('v2.1.1', 'chore(release): 2.1.1');
 
-    await pushTags(tmpPathLocal);
+    await pushTags();
 
     await moveSemverTags({
       cwd: tmpPathLocal,
