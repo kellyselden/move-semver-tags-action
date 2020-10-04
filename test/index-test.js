@@ -67,6 +67,15 @@ describe(function() {
     return commit;
   }
 
+  async function runTest(options) {
+    await pushTags();
+
+    await moveSemverTags({
+      cwd: tmpPathLocal,
+      ...options
+    });
+  }
+
   async function pushTags() {
     await execa('git', ['push', '--set-upstream', 'origin', 'master', '--follow-tags'], {
       cwd: tmpPathLocal
@@ -103,9 +112,7 @@ describe(function() {
     let v210Commit = await writeAndTag('v2.1.0');
     let v211Commit = await writeAndTag('v2.1.1');
 
-    await pushTags();
-
-    await moveSemverTags({ cwd: tmpPathLocal });
+    await runTest();
 
     await expectTags([
       {
@@ -191,9 +198,7 @@ describe(function() {
 
     let v211Commit = await writeAndTag('v2.1.1');
 
-    await pushTags();
-
-    await moveSemverTags({ cwd: tmpPathLocal });
+    await runTest();
 
     await expectTags([
       {
@@ -271,10 +276,7 @@ describe(function() {
     let v210Commit = await writeAndTag('v2.1.0', 'chore(release): 2.1.0');
     let v211Commit = await writeAndTag('v2.1.1', 'chore(release): 2.1.1');
 
-    await pushTags();
-
-    await moveSemverTags({
-      cwd: tmpPathLocal,
+    await runTest({
       copyAnnotations: true
     });
 
