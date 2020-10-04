@@ -63,13 +63,7 @@ async function index({
       message = await getTagMessage(tag, tmpPath);
     }
 
-    try {
-      await execa('git', ['tag', '-d', tag], {
-        cwd: tmpPath
-      });
-    } catch (err) {}
-
-    await execa('git', ['tag', '-a', tag, commit, '-m', message], {
+    await execa('git', ['tag', '-a', tag, commit, '--force', '-m', message], {
       cwd: tmpPath
     });
 
