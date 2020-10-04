@@ -39,12 +39,6 @@ async function tag(tmpPath, tag, message = '') {
   });
 }
 
-async function writeAndCommit(tmpPath) {
-  await writeRandomFile(tmpPath);
-
-  return await addAndCommit(tmpPath);
-}
-
 async function cloneRemote(localPath, remotePath) {
   await execa('git', ['clone', '--bare', localPath, remotePath]);
 
@@ -65,8 +59,14 @@ describe(function() {
   let tmpPathLocal;
   let tmpPathRemote;
 
+  async function writeAndCommit() {
+    await writeRandomFile(tmpPathLocal);
+
+    return await addAndCommit(tmpPathLocal);
+  }
+
   async function writeAndTag(...args) {
-    let commit = await writeAndCommit(tmpPathLocal);
+    let commit = await writeAndCommit();
 
     await tag(tmpPathLocal, ...args);
 
