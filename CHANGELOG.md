@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.25](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.24...v2.1.25) (2020-11-13)
+
 ### [2.1.24](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.23...v2.1.24) (2020-10-19)
 
 ### [2.1.23](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.22...v2.1.23) (2020-10-04)
