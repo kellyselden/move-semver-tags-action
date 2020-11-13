@@ -3,8 +3,7 @@
 const { describe } = require('./helpers/mocha');
 const { expect } = require('./helpers/chai');
 const moveSemverTags = require('../src');
-const { createTmpDir } = require('./helpers/tmp');
-const { gitInit } = require('git-fixtures');
+const { gitInit, cloneRemote } = require('git-fixtures');
 const execa = require('execa');
 const fs = require('fs');
 const path = require('path');
@@ -14,14 +13,6 @@ const sinon = require('sinon');
 const {
   getTags
 } = require('../src/git');
-
-async function cloneRemote(localPath, remotePath) {
-  await execa('git', ['clone', '--bare', localPath, remotePath]);
-
-  await execa('git', ['remote', 'add', 'origin', remotePath], {
-    cwd: localPath
-  });
-}
 
 describe(function() {
   this.timeout(5e3);
@@ -95,12 +86,8 @@ describe(function() {
   }
 
   beforeEach(async function() {
-    tmpPathLocal = await createTmpDir();
-    tmpPathRemote = await createTmpDir();
-
-    await gitInit({ cwd: tmpPathLocal });
-
-    await cloneRemote(tmpPathLocal, tmpPathRemote);
+    tmpPathLocal = await gitInit();
+    tmpPathRemote = await cloneRemote({ localPath: tmpPathLocal });
   });
 
   it('works without floating tags', async function() {
