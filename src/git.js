@@ -1,7 +1,10 @@
 'use strict';
 
 const execa = require('execa');
-const { EOL } = require('os');
+
+// git for windows doesn't even use windows newlines
+// const { EOL } = require('os');
+const EOL = /\r?\n/;
 
 async function getTags(tmpPath) {
   let { stdout } = await execa('git', [
