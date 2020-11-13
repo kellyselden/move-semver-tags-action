@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.26](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.25...v2.1.26) (2020-11-13)
+
+
+### Bug Fixes
+
+* fix `EOL` in windows ([31a0e15](https://github.com/kellyselden/move-semver-tags-action/commit/31a0e15bc9c0b124786b56357a27e3351ccff771))
+
 ### [2.1.25](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.24...v2.1.25) (2020-11-13)
 
 ### [2.1.24](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.23...v2.1.24) (2020-10-19)

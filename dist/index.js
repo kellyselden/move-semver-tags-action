@@ -3963,7 +3963,10 @@ module.exports = valid
 
 
 const execa = __webpack_require__(955);
-const { EOL } = __webpack_require__(87);
+
+// git for windows doesn't even use windows newlines
+// const { EOL } = require('os');
+const EOL = /\r?\n/;
 
 async function getTags(tmpPath) {
   let { stdout } = await execa('git', [
