@@ -49,8 +49,10 @@ async function moveSemverTags({
 
   let newTags = [];
 
+  let tagVersions = tags.map(({ tag }) => tag);
+
   for (let [tag, range] of Object.entries(majorsAndMinors)) {
-    let maxSatisfying = semver.maxSatisfying(tags.map(({ tag }) => tag), range);
+    let maxSatisfying = semver.maxSatisfying(tagVersions, range);
 
     let {
       commit,
