@@ -50,6 +50,12 @@ describe(function() {
     });
   }
 
+  async function getTagSha(tag) {
+    return (await execa('git', ['show-ref', tag, '--hash'], {
+      cwd: tmpPathLocal
+    })).stdout;
+  }
+
   async function writeAndTag(...args) {
     let commit = await writeAndCommit();
 
@@ -194,5 +200,21 @@ describe(function() {
       [v211Commit, 'v2.1', 'chore(release): 2.1.1'],
       [v211Commit, 'v2', 'chore(release): 2.1.1']
     ]);
+  });
+
+  it('doesn\'t regen tags that don\'t need to move', async function() {
+    await writeAndTag('v1.0.0');
+
+    await tag('v1');
+
+    let oldSha = await getTagSha('v1');
+
+    await writeAndTag('v2.0.0');
+
+    await runTest();
+
+    let newSha = await getTagSha('v1');
+
+    expect(newSha).to.equal(oldSha);
   });
 });
