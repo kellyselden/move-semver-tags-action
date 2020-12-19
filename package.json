@@ -2,9 +2,9 @@
   "name": "move-semver-tags-action",
   "version": "2.1.35",
   "description": "Move your SemVer major and minor tags automatically",
-  "main": "index.js",
+  "main": "src/index.js",
   "files": [
-    "index.js"
+    "src"
   ],
   "scripts": {
     "lint:git": "commitlint",
