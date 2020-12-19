@@ -3633,6 +3633,7 @@ async function moveSemverTags({
 
   for (let [tag, range] of Object.entries(majorsAndMinors)) {
     let {
+      commit: originalCommit,
       message: originalMessage = ''
     } = tagsObj[tag] || {};
 
@@ -3642,6 +3643,10 @@ async function moveSemverTags({
       commit: maxSatisfyingCommit,
       message: maxSatisfyingMessage
     } = tagsObj[maxSatisfying];
+
+    if (maxSatisfyingCommit === originalCommit) {
+      continue;
+    }
 
     let message;
 
