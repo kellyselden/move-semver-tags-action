@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.32](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.31...v2.1.32) (2020-12-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency execa to v5 ([c469aec](https://github.com/kellyselden/move-semver-tags-action/commit/c469aec03249a6d8bf2d5525e62c23c30c8ad4ff))
+
 ### [2.1.31](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.30...v2.1.31) (2020-12-19)
 
 ### [2.1.30](https://github.com/kellyselden/move-semver-tags-action/compare/v2.1.29...v2.1.30) (2020-12-19)
