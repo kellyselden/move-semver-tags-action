@@ -55,19 +55,19 @@ async function moveSemverTags({
     let maxSatisfying = semver.maxSatisfying(tagVersions, range);
 
     let {
-      commit,
-      message: originalMessage
+      commit: maxSatisfyingCommit,
+      message: maxSatisfyingMessage
     } = tagsObj[maxSatisfying];
 
     let message;
 
     if (copyAnnotations) {
-      message = originalMessage;
+      message = maxSatisfyingMessage;
     } else {
       message = tagsObj[tag] ? tagsObj[tag].message : '';
     }
 
-    await execa('git', ['tag', '-a', tag, commit, '--force', '-m', message], {
+    await execa('git', ['tag', '-a', tag, maxSatisfyingCommit, '--force', '-m', message], {
       cwd: tmpPath
     });
 
