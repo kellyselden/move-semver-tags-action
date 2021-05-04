@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@crowdstrike/commitlint": "^3.0.0",
-    "@kellyselden/node-template": "1.4.3",
+    "@kellyselden/node-template": "1.4.5",
     "@zeit/ncc": "0.22.3",
     "chai": "^4.3.4",
     "eslint": "^7.25.0",
@@ -57,7 +57,7 @@
     "git-fixtures": "^3.0.0",
     "mocha": "^8.3.2",
     "mocha-helpers": "^5.1.1",
-    "renovate-config-standard": "^2.1.1",
+    "renovate-config-standard": "2.1.2",
     "sinon": "^10.0.0",
     "standard-node-template": "1.0.0",
     "standard-version": "^9.0.0"
