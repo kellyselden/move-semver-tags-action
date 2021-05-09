@@ -13,7 +13,7 @@ For more information, see https://docs.github.com/en/free-pro-team@latest/action
 ### As GitHub Action
 
 ```yml
-- uses: kellyselden/move-semver-tags-action@v2
+- uses: kellyselden/move-semver-tags-action@v3
   with:
     copy-annotations: true # optional, default `false`
 ```
