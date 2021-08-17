@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.11](https://github.com/kellyselden/move-semver-tags-action/compare/v3.0.10...v3.0.11) (2021-08-17)
+
+
+### Bug Fixes
+
+* update yn import ([87cc3be](https://github.com/kellyselden/move-semver-tags-action/commit/87cc3bea5711b0c5db7803426f4879fe46fb5fcb))
+* **deps:** update dependency yn to v5 ([c9afd70](https://github.com/kellyselden/move-semver-tags-action/commit/c9afd7072bf5a7eab38677f913bef015c643f182))
+
 ### [3.0.10](https://github.com/kellyselden/move-semver-tags-action/compare/v3.0.9...v3.0.10) (2021-07-04)
 
 ### [3.0.9](https://github.com/kellyselden/move-semver-tags-action/compare/v3.0.8...v3.0.9) (2021-06-14)
