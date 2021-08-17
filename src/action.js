@@ -2,9 +2,11 @@
 
 const core = require('@actions/core');
 const index = require('.');
-const yn = require('yn');
 
 (async() => {
+  // eslint-disable-next-line prefer-let/prefer-let
+  const { default: yn } = await import('yn');
+
   try {
     let copyAnnotations = yn(core.getInput('copy-annotations'));
 
