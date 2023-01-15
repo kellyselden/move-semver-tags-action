@@ -249,4 +249,76 @@ describe(function() {
       expect(newSha).to.equal(oldSha);
     });
   });
+
+  describe('CLI', function() {
+    async function runTest(...args) {
+      await pushTags();
+
+      await execa.node(require.resolve('../bin'), args, {
+        cwd: tmpPathLocal
+      });
+    }
+
+    it('works, ignores annotations by default', async function() {
+      let v100Commit = await writeAndTag('v1.0.0', 'chore(release): 1.0.0');
+      let v101Commit = await writeAndTag('v1.0.1', 'chore(release): 1.0.1');
+      let v110Commit = await writeAndTag('v1.1.0', 'chore(release): 1.1.0');
+      let v111Commit = await writeAndTag('v1.1.1', 'chore(release): 1.1.1');
+      let v200Commit = await writeAndTag('v2.0.0', 'chore(release): 2.0.0');
+      let v201Commit = await writeAndTag('v2.0.1', 'chore(release): 2.0.1');
+      let v210Commit = await writeAndTag('v2.1.0', 'chore(release): 2.1.0');
+      let v211Commit = await writeAndTag('v2.1.1', 'chore(release): 2.1.1');
+
+      await pushTags();
+
+      await runTest();
+
+      await expectTags([
+        [v100Commit, 'v1.0.0'],
+        [v101Commit, 'v1.0.1'],
+        [v101Commit, 'v1.0'],
+        [v110Commit, 'v1.1.0'],
+        [v111Commit, 'v1.1.1'],
+        [v111Commit, 'v1.1'],
+        [v111Commit, 'v1'],
+        [v200Commit, 'v2.0.0'],
+        [v201Commit, 'v2.0.1'],
+        [v201Commit, 'v2.0'],
+        [v210Commit, 'v2.1.0'],
+        [v211Commit, 'v2.1.1'],
+        [v211Commit, 'v2.1'],
+        [v211Commit, 'v2']
+      ]);
+    });
+
+    it('can copy annotations', async function() {
+      let v100Commit = await writeAndTag('v1.0.0', 'chore(release): 1.0.0');
+      let v101Commit = await writeAndTag('v1.0.1', 'chore(release): 1.0.1');
+      let v110Commit = await writeAndTag('v1.1.0', 'chore(release): 1.1.0');
+      let v111Commit = await writeAndTag('v1.1.1', 'chore(release): 1.1.1');
+      let v200Commit = await writeAndTag('v2.0.0', 'chore(release): 2.0.0');
+      let v201Commit = await writeAndTag('v2.0.1', 'chore(release): 2.0.1');
+      let v210Commit = await writeAndTag('v2.1.0', 'chore(release): 2.1.0');
+      let v211Commit = await writeAndTag('v2.1.1', 'chore(release): 2.1.1');
+
+      await runTest('--copy-annotations');
+
+      await expectTags([
+        [v100Commit, 'v1.0.0', 'chore(release): 1.0.0'],
+        [v101Commit, 'v1.0.1', 'chore(release): 1.0.1'],
+        [v101Commit, 'v1.0', 'chore(release): 1.0.1'],
+        [v110Commit, 'v1.1.0', 'chore(release): 1.1.0'],
+        [v111Commit, 'v1.1.1', 'chore(release): 1.1.1'],
+        [v111Commit, 'v1.1', 'chore(release): 1.1.1'],
+        [v111Commit, 'v1', 'chore(release): 1.1.1'],
+        [v200Commit, 'v2.0.0', 'chore(release): 2.0.0'],
+        [v201Commit, 'v2.0.1', 'chore(release): 2.0.1'],
+        [v201Commit, 'v2.0', 'chore(release): 2.0.1'],
+        [v210Commit, 'v2.1.0', 'chore(release): 2.1.0'],
+        [v211Commit, 'v2.1.1', 'chore(release): 2.1.1'],
+        [v211Commit, 'v2.1', 'chore(release): 2.1.1'],
+        [v211Commit, 'v2', 'chore(release): 2.1.1']
+      ]);
+    });
+  });
 });

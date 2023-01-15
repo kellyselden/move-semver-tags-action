@@ -4,8 +4,12 @@
   "description": "Move your SemVer major and minor tags automatically",
   "main": "src/index.js",
   "files": [
+    "bin",
     "src"
   ],
+  "bin": {
+    "move-semver-tags-action": "bin/index.js"
+  },
   "scripts": {
     "lint:git": "commitlint",
     "lint": "eslint . --ext js,json",
@@ -40,6 +44,7 @@
     "@actions/core": "^1.2.6",
     "execa": "^5.0.0",
     "semver": "^7.3.2",
+    "yargs": "^17.6.2",
     "yn": "^5.0.0"
   },
   "devDependencies": {
