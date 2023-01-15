@@ -26,3 +26,10 @@ await require('move-semver-tags-action')({
   copyAnnotations: true // optional, default `false`
 });
 ```
+
+### As CLI
+
+```sh
+move-semver-tags-action \
+  --copy-annotations=true \ # optional, default `false`
+```
