@@ -64,15 +64,6 @@ describe(function() {
     return commit;
   }
 
-  async function runTest(options) {
-    await pushTags();
-
-    await moveSemverTags({
-      cwd: tmpPathLocal,
-      ...options
-    });
-  }
-
   async function pushTags() {
     await execa('git', ['push', '--set-upstream', 'origin', 'master', '--follow-tags'], {
       cwd: tmpPathLocal
@@ -97,6 +88,15 @@ describe(function() {
   });
 
   describe('library', function() {
+    async function runTest(options) {
+      await pushTags();
+
+      await moveSemverTags({
+        cwd: tmpPathLocal,
+        ...options
+      });
+    }
+
     it('works without floating tags', async function() {
       let v100Commit = await writeAndTag('v1.0.0');
       let v101Commit = await writeAndTag('v1.0.1');
