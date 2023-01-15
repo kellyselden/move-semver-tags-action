@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/kellyselden/move-semver-tags-action/compare/v3.1.1...v4.0.0) (2023-01-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* update to node 14
+
+* ember-cli-update-action ([615126d](https://github.com/kellyselden/move-semver-tags-action/commit/615126db8d379fe10500ca2ec9f32d17a6752038))
+
 ### [3.1.1](https://github.com/kellyselden/move-semver-tags-action/compare/v3.1.0...v3.1.1) (2023-01-15)
 
 ## [3.1.0](https://github.com/kellyselden/move-semver-tags-action/compare/v3.0.23...v3.1.0) (2023-01-15)
