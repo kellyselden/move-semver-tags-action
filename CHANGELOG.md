@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/kellyselden/move-semver-tags-action/compare/v3.0.23...v3.1.0) (2023-01-15)
+
+
+### Features
+
+* add CLI ([ab135d4](https://github.com/kellyselden/move-semver-tags-action/commit/ab135d4a10646026d3119b50ec136492618fd290))
+
 ### [3.0.23](https://github.com/kellyselden/move-semver-tags-action/compare/v3.0.22...v3.0.23) (2023-01-15)
 
 ### [3.0.22](https://github.com/kellyselden/move-semver-tags-action/compare/v3.0.21...v3.0.22) (2023-01-15)
