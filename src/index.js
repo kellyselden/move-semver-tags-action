@@ -5,10 +5,11 @@ const semver = require('semver');
 const {
   getTags
 } = require('./git');
+const defaults = require('../src/defaults');
 
 async function moveSemverTags({
   cwd: tmpPath = process.cwd(),
-  copyAnnotations
+  copyAnnotations = defaults.copyAnnotations
 }) {
   let tags = await getTags(tmpPath);
 
