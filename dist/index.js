@@ -3439,10 +3439,11 @@ const semver = __webpack_require__(876);
 const {
   getTags
 } = __webpack_require__(718);
+const defaults = __webpack_require__(812);
 
 async function moveSemverTags({
   cwd: tmpPath = process.cwd(),
-  copyAnnotations
+  copyAnnotations = defaults.copyAnnotations
 }) {
   let tags = await getTags(tmpPath);
 
@@ -4062,6 +4063,19 @@ module.exports = maxSatisfying
 
 /***/ }),
 
+/***/ 812:
+/***/ (function(module) {
+
+"use strict";
+
+
+module.exports = {
+  copyAnnotations: false
+};
+
+
+/***/ }),
+
 /***/ 814:
 /***/ (function(module, __unusedexports, __webpack_require__) {
 
@@ -4573,10 +4587,8 @@ const index = __webpack_require__(676);
   const { default: yn } = await __webpack_require__.e(/* import() */ 116).then(__webpack_require__.bind(null, 116));
 
   try {
-    let copyAnnotations = yn(core.getInput('copy-annotations'));
-
     await index({
-      copyAnnotations
+      copyAnnotations: yn(core.getInput('copy-annotations'))
     });
   } catch (err) {
     core.setFailed(err.message);
