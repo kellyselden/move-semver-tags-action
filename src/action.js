@@ -8,10 +8,8 @@ const index = require('.');
   const { default: yn } = await import('yn');
 
   try {
-    let copyAnnotations = yn(core.getInput('copy-annotations'));
-
     await index({
-      copyAnnotations
+      copyAnnotations: yn(core.getInput('copy-annotations'))
     });
   } catch (err) {
     core.setFailed(err.message);
