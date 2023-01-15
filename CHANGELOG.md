@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.3](https://github.com/kellyselden/move-semver-tags-action/compare/v4.0.2...v4.0.3) (2023-01-15)
+
+
+### Bug Fixes
+
+* actions only supports node12 and node16 ([655003e](https://github.com/kellyselden/move-semver-tags-action/commit/655003e23f0db8c0046c01b784bc53caea9850f7))
+
 ### [4.0.2](https://github.com/kellyselden/move-semver-tags-action/compare/v4.0.1...v4.0.2) (2023-01-15)
 
 
