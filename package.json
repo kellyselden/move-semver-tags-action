@@ -63,7 +63,7 @@
     "mocha": "^10.2.0",
     "mocha-helpers": "^7.0.0",
     "renovate-config-standard": "2.1.2",
-    "sinon": "^13.0.0",
+    "sinon": "^15.0.0",
     "standard-node-template": "2.1.0",
     "standard-version": "^9.0.0"
   }
