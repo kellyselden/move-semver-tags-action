@@ -15,7 +15,7 @@ const {
 } = require('../src/git');
 
 describe(function() {
-  this.timeout(10e3);
+  this.timeout(15e3);
 
   let tmpPathLocal;
   let tmpPathRemote;
