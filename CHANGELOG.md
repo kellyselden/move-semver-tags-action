@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.0.2](https://github.com/kellyselden/move-semver-tags-action/compare/v5.0.1...v5.0.2) (2023-07-07)
+
+
+### Bug Fixes
+
+* **deps:** update dependency execa to v7 ([4b4f2f1](https://github.com/kellyselden/move-semver-tags-action/commit/4b4f2f18ada9176c9fb6a1565ccb23b82564932c))
+
 ### [5.0.1](https://github.com/kellyselden/move-semver-tags-action/compare/v5.0.0...v5.0.1) (2023-07-07)
 
 ## [5.0.0](https://github.com/kellyselden/move-semver-tags-action/compare/v4.0.11...v5.0.0) (2023-07-07)
