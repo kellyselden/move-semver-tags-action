@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0](https://github.com/kellyselden/move-semver-tags-action/compare/v5.1.2...v6.0.0) (2023-11-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* update to node 18
+
+* Merge pull request #133 from kellyselden/renovate/standard-node-template-4.x ([82f294d](https://github.com/kellyselden/move-semver-tags-action/commit/82f294d0431832770c2183e85cce470e255d8157)), closes [#133](https://github.com/kellyselden/move-semver-tags-action/issues/133)
+
 ### [5.1.2](https://github.com/kellyselden/move-semver-tags-action/compare/v5.1.1...v5.1.2) (2023-11-04)
 
 ### [5.1.1](https://github.com/kellyselden/move-semver-tags-action/compare/v5.1.0...v5.1.1) (2023-11-04)
