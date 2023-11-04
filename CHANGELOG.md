@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.1.0](https://github.com/kellyselden/move-semver-tags-action/compare/v5.0.8...v5.1.0) (2023-11-04)
+
+
+### Features
+
+* run action with node20 ([b1a21a1](https://github.com/kellyselden/move-semver-tags-action/commit/b1a21a1a59f92ea8734a1fe13791e910a9e82508))
+
 ### [5.0.8](https://github.com/kellyselden/move-semver-tags-action/compare/v5.0.7...v5.0.8) (2023-11-04)
 
 ### [5.0.7](https://github.com/kellyselden/move-semver-tags-action/compare/v5.0.6...v5.0.7) (2023-09-06)
