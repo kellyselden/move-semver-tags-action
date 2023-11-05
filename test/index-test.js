@@ -33,7 +33,7 @@ describe(function() {
       cwd: tmpPathLocal
     })).stdout;
 
-    let commit = result.match(/^\[master .*([^ ]+)\] /)[1];
+    let commit = result.match(/^\[main .*([^ ]+)\] /)[1];
 
     return commit;
   }
@@ -65,7 +65,7 @@ describe(function() {
   }
 
   async function pushTags() {
-    await execa('git', ['push', '--set-upstream', 'origin', 'master', '--follow-tags'], {
+    await execa('git', ['push', '--set-upstream', 'origin', 'main', '--follow-tags'], {
       cwd: tmpPathLocal
     });
   }
@@ -83,7 +83,7 @@ describe(function() {
   }
 
   beforeEach(async function() {
-    tmpPathLocal = await gitInit();
+    tmpPathLocal = await gitInit({ defaultBranchName: 'main' });
     tmpPathRemote = await cloneRemote({ localPath: tmpPathLocal });
   });
 
