@@ -4,7 +4,6 @@ const { describe } = require('./helpers/mocha');
 const { expect } = require('./helpers/chai');
 const moveSemverTags = require('../src');
 const { gitInit, cloneRemote } = require('git-fixtures');
-const execa = require('execa');
 const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
@@ -25,6 +24,8 @@ describe(function() {
   }
 
   async function addAndCommit() {
+    let { execa } = await import('execa');
+
     await execa('git', ['add', '.'], {
       cwd: tmpPathLocal
     });
@@ -45,12 +46,16 @@ describe(function() {
   }
 
   async function tag(tag, message = '') {
+    let { execa } = await import('execa');
+
     await execa('git', ['tag', tag, '-m', message], {
       cwd: tmpPathLocal
     });
   }
 
   async function getTagSha(tag) {
+    let { execa } = await import('execa');
+
     return (await execa('git', ['show-ref', tag, '--hash'], {
       cwd: tmpPathLocal
     })).stdout;
@@ -65,6 +70,8 @@ describe(function() {
   }
 
   async function pushTags() {
+    let { execa } = await import('execa');
+
     await execa('git', ['push', '--set-upstream', 'origin', 'main', '--follow-tags'], {
       cwd: tmpPathLocal
     });
@@ -252,9 +259,11 @@ describe(function() {
 
   describe('CLI', function() {
     async function runTest(...args) {
+      let { execaNode } = await import('execa');
+
       await pushTags();
 
-      await execa.node(require.resolve('../bin'), args, {
+      await execaNode(require.resolve('../bin'), args, {
         cwd: tmpPathLocal
       });
     }
