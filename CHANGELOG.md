@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.4](https://github.com/kellyselden/move-semver-tags-action/compare/v6.0.3...v6.0.4) (2023-11-05)
+
+
+### Bug Fixes
+
+* support esm execa ([9bb1e7a](https://github.com/kellyselden/move-semver-tags-action/commit/9bb1e7afe3eec8cf11f1ed3b369a6a9b4d6f1de7))
+* **deps:** update dependency execa to v8 ([def3739](https://github.com/kellyselden/move-semver-tags-action/commit/def37397db682001e0f3ec05289859caf76fe979))
+
 ### [6.0.3](https://github.com/kellyselden/move-semver-tags-action/compare/v6.0.2...v6.0.3) (2023-11-05)
 
 ### [6.0.2](https://github.com/kellyselden/move-semver-tags-action/compare/v6.0.1...v6.0.2) (2023-11-05)
