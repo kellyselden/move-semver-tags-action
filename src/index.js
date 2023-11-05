@@ -1,6 +1,5 @@
 'use strict';
 
-const execa = require('execa');
 const semver = require('semver');
 const {
   getTags
@@ -11,6 +10,8 @@ async function moveSemverTags({
   cwd: tmpPath = process.cwd(),
   copyAnnotations = defaults.copyAnnotations
 }) {
+  let { execa } = await import('execa');
+
   let tags = await getTags(tmpPath);
 
   let tagsObj = {};

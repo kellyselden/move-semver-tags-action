@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "execa": "^5.0.0",
+    "execa": "^8.0.0",
     "semver": "^7.3.2",
     "yargs": "^17.6.2",
     "yn": "^5.0.0"
