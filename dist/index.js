@@ -3684,7 +3684,7 @@ module.exports = {
 const EOL = /\r?\n/;
 
 async function getTags(tmpPath) {
-  let { execa } = await __nccwpck_require__.e(/* import() */ 171).then(__nccwpck_require__.bind(__nccwpck_require__, 5171));
+  let { execa } = await __nccwpck_require__.e(/* import() */ 683).then(__nccwpck_require__.bind(__nccwpck_require__, 7683));
 
   let { stdout } = await execa('git', [
     'for-each-ref',
@@ -3735,7 +3735,7 @@ async function moveSemverTags({
   cwd: tmpPath = process.cwd(),
   copyAnnotations = defaults.copyAnnotations
 }) {
-  let { execa } = await __nccwpck_require__.e(/* import() */ 171).then(__nccwpck_require__.bind(__nccwpck_require__, 5171));
+  let { execa } = await __nccwpck_require__.e(/* import() */ 683).then(__nccwpck_require__.bind(__nccwpck_require__, 7683));
 
   let tags = await getTags(tmpPath);
 
@@ -3852,6 +3852,14 @@ module.exports = require("node:child_process");
 
 /***/ }),
 
+/***/ 8474:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:events");
+
+/***/ }),
+
 /***/ 3024:
 /***/ ((module) => {
 
@@ -3884,11 +3892,43 @@ module.exports = require("node:process");
 
 /***/ }),
 
+/***/ 7075:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:stream");
+
+/***/ }),
+
+/***/ 6466:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:stream/promises");
+
+/***/ }),
+
+/***/ 6193:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:string_decoder");
+
+/***/ }),
+
 /***/ 8500:
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("node:timers/promises");
+
+/***/ }),
+
+/***/ 7066:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:tty");
 
 /***/ }),
 
@@ -3908,6 +3948,14 @@ module.exports = require("node:util");
 
 /***/ }),
 
+/***/ 8877:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:v8");
+
+/***/ }),
+
 /***/ 857:
 /***/ ((module) => {
 
@@ -3921,14 +3969,6 @@ module.exports = require("os");
 
 "use strict";
 module.exports = require("path");
-
-/***/ }),
-
-/***/ 2203:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("stream");
 
 /***/ })
 

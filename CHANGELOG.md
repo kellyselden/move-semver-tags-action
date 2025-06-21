@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [7.0.3](https://github.com/kellyselden/move-semver-tags-action/compare/v7.0.2...v7.0.3) (2025-06-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency execa to v9 ([21c132a](https://github.com/kellyselden/move-semver-tags-action/commit/21c132a535de14070e10381431945062d4d26108))
+
 ### [7.0.2](https://github.com/kellyselden/move-semver-tags-action/compare/v7.0.1...v7.0.2) (2025-06-21)
 
 ### [7.0.1](https://github.com/kellyselden/move-semver-tags-action/compare/v7.0.0...v7.0.1) (2025-06-21)
