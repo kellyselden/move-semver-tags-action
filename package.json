@@ -65,6 +65,6 @@
     "renovate-config-standard": "2.2.0",
     "sinon": "^21.0.0",
     "standard-node-template": "7.0.0",
-    "standard-version": "^9.0.0"
+    "commit-and-tag-version": "^9.5.0"
   }
 }
