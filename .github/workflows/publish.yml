@@ -30,6 +30,6 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-    - uses: kellyselden/move-semver-tags-action@v6
+    - uses: kellyselden/move-semver-tags-action@v7
       with:
         copy-annotations: true
