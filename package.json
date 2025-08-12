@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "@crowdstrike/commitlint": "^8.0.3",
-    "@kellyselden/node-template": "6.5.1",
+    "@kellyselden/node-template": "6.5.2",
     "@vercel/ncc": "0.38.3",
     "chai": "^4.5.0",
     "commit-and-tag-version": "^9.5.0",
@@ -63,7 +63,7 @@
     "git-fixtures": "^9.0.0",
     "mocha": "^11.7.0",
     "mocha-helpers": "^10.0.0",
-    "renovate-config-standard": "2.2.0",
+    "renovate-config-standard": "2.3.0",
     "sinon": "^21.0.0",
     "standard-node-template": "7.2.0"
   }
