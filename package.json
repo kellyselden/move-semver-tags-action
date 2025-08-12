@@ -1,6 +1,6 @@
 {
   "name": "move-semver-tags-action",
-  "version": "7.0.19",
+  "version": "7.0.20",
   "description": "Move your SemVer major and minor tags automatically",
   "main": "src/index.js",
   "files": [
