@@ -10,7 +10,7 @@ const { promisify } = require('util');
 const writeFile = promisify(fs.writeFile);
 const sinon = require('sinon');
 const {
-  getTags
+  getTags,
 } = require('../src/git');
 
 describe(function() {
@@ -27,11 +27,11 @@ describe(function() {
     let { execa } = await import('execa');
 
     await execa('git', ['add', '.'], {
-      cwd: tmpPathLocal
+      cwd: tmpPathLocal,
     });
 
     let result = (await execa('git', ['commit', '-m', 'foo'], {
-      cwd: tmpPathLocal
+      cwd: tmpPathLocal,
     })).stdout;
 
     let commit = result.match(/^\[main .*([^ ]+)\] /)[1];
@@ -49,7 +49,7 @@ describe(function() {
     let { execa } = await import('execa');
 
     await execa('git', ['tag', tag, '-m', message], {
-      cwd: tmpPathLocal
+      cwd: tmpPathLocal,
     });
   }
 
@@ -57,7 +57,7 @@ describe(function() {
     let { execa } = await import('execa');
 
     return (await execa('git', ['show-ref', tag, '--hash'], {
-      cwd: tmpPathLocal
+      cwd: tmpPathLocal,
     })).stdout;
   }
 
@@ -73,7 +73,7 @@ describe(function() {
     let { execa } = await import('execa');
 
     await execa('git', ['push', '--set-upstream', 'origin', 'main', '--follow-tags'], {
-      cwd: tmpPathLocal
+      cwd: tmpPathLocal,
     });
   }
 
@@ -84,7 +84,7 @@ describe(function() {
       expect(actual).to.match(sinon.match.some(sinon.match({
         commit: sinon.match(commit),
         tag,
-        ...message ? { message } : {}
+        ...message ? { message } : {},
       })));
     }
   }
@@ -100,7 +100,7 @@ describe(function() {
 
       await moveSemverTags({
         cwd: tmpPathLocal,
-        ...options
+        ...options,
       });
     }
 
@@ -130,7 +130,7 @@ describe(function() {
         [v210Commit, 'v2.1.0'],
         [v211Commit, 'v2.1.1'],
         [v211Commit, 'v2.1'],
-        [v211Commit, 'v2']
+        [v211Commit, 'v2'],
       ]);
     });
 
@@ -174,7 +174,7 @@ describe(function() {
         [v210Commit, 'v2.1.0'],
         [v211Commit, 'v2.1.1'],
         [v211Commit, 'v2.1', 'version two dot one'],
-        [v211Commit, 'v2', 'version two']
+        [v211Commit, 'v2', 'version two'],
       ]);
     });
 
@@ -204,7 +204,7 @@ describe(function() {
         [v210Commit, 'v2.1.0'],
         [v211Commit, 'v2.1.1'],
         [v211Commit, 'v2.1'],
-        [v211Commit, 'v2']
+        [v211Commit, 'v2'],
       ]);
     });
 
@@ -219,7 +219,7 @@ describe(function() {
       let v211Commit = await writeAndTag('v2.1.1', 'chore(release): 2.1.1');
 
       await runTest({
-        copyAnnotations: true
+        copyAnnotations: true,
       });
 
       await expectTags([
@@ -236,7 +236,7 @@ describe(function() {
         [v210Commit, 'v2.1.0', 'chore(release): 2.1.0'],
         [v211Commit, 'v2.1.1', 'chore(release): 2.1.1'],
         [v211Commit, 'v2.1', 'chore(release): 2.1.1'],
-        [v211Commit, 'v2', 'chore(release): 2.1.1']
+        [v211Commit, 'v2', 'chore(release): 2.1.1'],
       ]);
     });
 
@@ -264,7 +264,7 @@ describe(function() {
       await pushTags();
 
       await execaNode(require.resolve('../bin'), args, {
-        cwd: tmpPathLocal
+        cwd: tmpPathLocal,
       });
     }
 
@@ -296,7 +296,7 @@ describe(function() {
         [v210Commit, 'v2.1.0'],
         [v211Commit, 'v2.1.1'],
         [v211Commit, 'v2.1'],
-        [v211Commit, 'v2']
+        [v211Commit, 'v2'],
       ]);
     });
 
@@ -326,7 +326,7 @@ describe(function() {
         [v210Commit, 'v2.1.0', 'chore(release): 2.1.0'],
         [v211Commit, 'v2.1.1', 'chore(release): 2.1.1'],
         [v211Commit, 'v2.1', 'chore(release): 2.1.1'],
-        [v211Commit, 'v2', 'chore(release): 2.1.1']
+        [v211Commit, 'v2', 'chore(release): 2.1.1'],
       ]);
     });
   });

@@ -2,13 +2,13 @@
 
 const semver = require('semver');
 const {
-  getTags
+  getTags,
 } = require('./git');
 const defaults = require('../src/defaults');
 
 async function moveSemverTags({
   cwd: tmpPath = process.cwd(),
-  copyAnnotations = defaults.copyAnnotations
+  copyAnnotations = defaults.copyAnnotations,
 }) {
   let { execa } = await import('execa');
 
@@ -20,11 +20,11 @@ async function moveSemverTags({
   for (let {
     commit,
     tag,
-    message
+    message,
   } of tags) {
     tagsObj[tag] = {
       commit,
-      message
+      message,
     };
 
     if (semver.valid(tag) === null) {
@@ -35,7 +35,7 @@ async function moveSemverTags({
 
     let {
       major,
-      minor
+      minor,
     } = parsed;
 
     let majorMinor = `${major}.${minor}`;
@@ -45,7 +45,7 @@ async function moveSemverTags({
 
     Object.assign(tagsObj[tag], {
       major: `v${major}`,
-      minor: `v${major}.${minor}`
+      minor: `v${major}.${minor}`,
     });
   }
 
@@ -56,14 +56,14 @@ async function moveSemverTags({
   for (let [tag, range] of Object.entries(majorsAndMinors)) {
     let {
       commit: originalCommit,
-      message: originalMessage = ''
+      message: originalMessage = '',
     } = tagsObj[tag] || {};
 
     let maxSatisfying = semver.maxSatisfying(tagVersions, range);
 
     let {
       commit: maxSatisfyingCommit,
-      message: maxSatisfyingMessage
+      message: maxSatisfyingMessage,
     } = tagsObj[maxSatisfying];
 
     if (maxSatisfyingCommit === originalCommit) {
@@ -79,14 +79,14 @@ async function moveSemverTags({
     }
 
     await execa('git', ['tag', '-a', tag, maxSatisfyingCommit, '--force', '-m', message], {
-      cwd: tmpPath
+      cwd: tmpPath,
     });
 
     newTags.push(tag);
   }
 
   await execa('git', ['push', 'origin', 'tag', ...newTags, '--force'], {
-    cwd: tmpPath
+    cwd: tmpPath,
   });
 }
 
