@@ -9,8 +9,8 @@ const { argv } = require('yargs')
     'copy-annotations': {
       description: 'Copy the annotation from the latest tag',
       type: 'boolean',
-      default: defaults.copyAnnotations
-    }
+      default: defaults.copyAnnotations,
+    },
   });
 
 index(argv);

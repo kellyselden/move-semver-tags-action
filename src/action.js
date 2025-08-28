@@ -9,7 +9,7 @@ const index = require('.');
 
   try {
     await index({
-      copyAnnotations: yn(core.getInput('copy-annotations'))
+      copyAnnotations: yn(core.getInput('copy-annotations')),
     });
   } catch (err) {
     core.setFailed(err.message);

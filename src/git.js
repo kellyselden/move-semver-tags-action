@@ -13,9 +13,9 @@ async function getTags(tmpPath) {
     '-v:refname',
     '--format',
     '%(*objectname) %(tag) %(subject)',
-    'refs/tags'
+    'refs/tags',
   ], {
-    cwd: tmpPath
+    cwd: tmpPath,
   });
 
   let lines = stdout.split(EOL);
@@ -26,7 +26,7 @@ async function getTags(tmpPath) {
     return {
       commit,
       tag,
-      message: message.join(' ')
+      message: message.join(' '),
     };
   });
 
@@ -34,5 +34,5 @@ async function getTags(tmpPath) {
 }
 
 module.exports = {
-  getTags
+  getTags,
 };
