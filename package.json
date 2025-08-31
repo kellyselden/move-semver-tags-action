@@ -44,7 +44,7 @@
     "@actions/core": "^1.2.6",
     "execa": "^9.0.0",
     "semver": "^7.3.2",
-    "yargs": "^17.6.2",
+    "yargs": "^18.0.0",
     "yn": "^5.0.0"
   },
   "devDependencies": {
