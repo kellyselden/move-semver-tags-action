@@ -2,43 +2,34 @@
   "name": "move-semver-tags-action",
   "version": "7.0.22",
   "description": "Move your SemVer major and minor tags automatically",
-  "main": "src/index.js",
-  "files": [
-    "bin",
-    "src"
-  ],
-  "bin": {
-    "move-semver-tags-action": "bin/index.js"
-  },
-  "scripts": {
-    "lint:git": "node node_modules/@crowdstrike/commitlint/bin --from HEAD~1",
-    "lint": "eslint",
-    "test": "mocha",
-    "release": "commit-and-tag-version --commit-all"
-  },
-  "commit-and-tag-version": {
-    "scripts": {
-      "prerelease": "ncc build src/action.js -o dist && git add -A dist",
-      "posttag": "git push --follow-tags --atomic"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kellyselden/move-semver-tags-action.git"
-  },
   "keywords": [
     "github-actions",
     "semver",
     "tags"
   ],
-  "author": "Kelly Selden, Jenny Judova, & Gonçalo Morais",
-  "license": "MIT",
+  "homepage": "https://github.com/kellyselden/move-semver-tags-action#readme",
   "bugs": {
     "url": "https://github.com/kellyselden/move-semver-tags-action/issues"
   },
-  "homepage": "https://github.com/kellyselden/move-semver-tags-action#readme",
-  "engines": {
-    "node": ">=20.9"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kellyselden/move-semver-tags-action.git"
+  },
+  "license": "MIT",
+  "author": "Kelly Selden, Jenny Judova, & Gonçalo Morais",
+  "main": "src/index.js",
+  "bin": {
+    "move-semver-tags-action": "bin/index.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "scripts": {
+    "lint": "eslint",
+    "lint:git": "node node_modules/@crowdstrike/commitlint/bin --from HEAD~1",
+    "release": "commit-and-tag-version --commit-all",
+    "test": "mocha"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
@@ -49,12 +40,12 @@
   },
   "devDependencies": {
     "@crowdstrike/commitlint": "^8.0.3",
-    "@kellyselden/node-template": "6.8.3",
+    "@kellyselden/node-template": "6.9.0",
     "@vercel/ncc": "0.38.3",
     "chai": "^4.5.0",
     "commit-and-tag-version": "^12.0.0",
     "eslint": "^9.34.0",
-    "eslint-config-sane-node": "^5.0.0",
+    "eslint-config-sane-node": "^6.0.0",
     "eslint-plugin-mocha": "^10.5.0",
     "git-fixtures": "^9.0.0",
     "mocha": "^11.7.1",
@@ -62,5 +53,14 @@
     "renovate-config-standard": "2.4.2",
     "sinon": "^21.0.0",
     "standard-node-template": "7.2.0"
+  },
+  "engines": {
+    "node": ">=20.9"
+  },
+  "commit-and-tag-version": {
+    "scripts": {
+      "prerelease": "ncc build src/action.js -o dist && git add -A dist",
+      "posttag": "git push --follow-tags --atomic"
+    }
   }
 }
