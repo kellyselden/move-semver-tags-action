@@ -1,6 +1,6 @@
 {
   "name": "move-semver-tags-action",
-  "version": "7.0.30",
+  "version": "7.0.29",
   "description": "Move your SemVer major and minor tags automatically",
   "keywords": [
     "github-actions",
@@ -55,7 +55,7 @@
     "standard-node-template": "8.0.0"
   },
   "engines": {
-    "node": ">=22.11"
+    "node": ">=20.9"
   },
   "commit-and-tag-version": {
     "scripts": {
