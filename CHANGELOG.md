@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [7.0.29](https://github.com/kellyselden/move-semver-tags-action/compare/v7.0.28...v7.0.29) (2026-09-09)
+
 ## [7.0.28](https://github.com/kellyselden/move-semver-tags-action/compare/v7.0.27...v7.0.28) (2026-09-09)
 
 ## [7.0.27](https://github.com/kellyselden/move-semver-tags-action/compare/v7.0.26...v7.0.27) (2026-09-09)
