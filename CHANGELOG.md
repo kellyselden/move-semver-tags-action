@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.0.1](https://github.com/kellyselden/move-semver-tags-action/compare/v8.0.0...v8.0.1) (2026-09-11)
+
 ## [8.0.0](https://github.com/kellyselden/move-semver-tags-action/compare/v7.0.31...v8.0.0) (2026-09-09)
 
 

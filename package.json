@@ -1,6 +1,6 @@
 {
   "name": "move-semver-tags-action",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "description": "Move your SemVer major and minor tags automatically",
   "keywords": [
     "github-actions",
