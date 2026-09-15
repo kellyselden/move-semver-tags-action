@@ -32,7 +32,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@actions/core": "^2.0.0",
+    "@actions/core": "^3.0.0",
     "execa": "^9.0.0",
     "semver": "^7.3.2",
     "yargs": "^17.6.2",
