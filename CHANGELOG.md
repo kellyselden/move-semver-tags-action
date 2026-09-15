@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [8.0.6](https://github.com/kellyselden/move-semver-tags-action/compare/v8.0.5...v8.0.6) (2026-09-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @actions/core to v2 ([e6948da](https://github.com/kellyselden/move-semver-tags-action/commit/e6948da1180facdf6b6bbab35d8afebbbc0e11be))
+
 ## [8.0.5](https://github.com/kellyselden/move-semver-tags-action/compare/v8.0.4...v8.0.5) (2026-09-15)
 
 ## [8.0.4](https://github.com/kellyselden/move-semver-tags-action/compare/v8.0.3...v8.0.4) (2026-09-15)
